@@ -1,0 +1,39 @@
+{
+  "name": "minimarket-e-commerce",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@lottiefiles/dotlottie-react": "^0.9.1",
+    "@reduxjs/toolkit": "^2.2.7",
+    "cloudinary": "^2.5.0",
+    "lottie-react": "^2.4.0",
+    "mongodb": "^6.9.0",
+    "next": "14.2.13",
+    "next-cloudinary": "^6.13.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
+    "react-icons": "^5.3.0",
+    "react-redux": "^9.1.2",
+    "usehooks-ts": "^3.1.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
