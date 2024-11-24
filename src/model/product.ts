@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export type Brand = "Alpina" | "Colanta" | "Pepsi" | "Coca Cola" | "Bavaria" | "Postobon" | "Nestle" | "Doria" | "Quala" | "Nutresa" | "Mondelez" | "Unilever" | "Johnson & Johnson" | "Bayer" | "Bimbo" | "Grupo Familia" | "Ramo";
+export type Brand = "Alpina" | "Colanta" | "Pepsi" | "Coca Cola" | "Bavaria" | "Postobon" | "Nestle" | "Doria" | "Quala" | "Nutresa" | "Mondelez" | "Unilever" | "Johnson & Johnson" | "Bimbo" | "Grupo Familia" | "Ramo" | "Procter & Gamble";
 
 export type Subcategories = {
     canastaFamiliar: 'parva' | 'arepas' | 'granos' | 'lácteos' | 'enlatados' | 'aceites' | 'matequillas'  | 'condimentos' | 'otros';
@@ -15,6 +15,7 @@ export type Subcategories = {
 export type Category = keyof Subcategories;
 
 export type StockStatus = 'low' | 'available' | 'out';
+
 export interface Product {
     searchString?: string;
     barcode: string;
@@ -30,6 +31,7 @@ export interface Product {
     stockStatus?: StockStatus;
     stock?: number;
 }
+
 
 export interface ProductByCategory<T extends Category> {
     _id?: ObjectId | string;
