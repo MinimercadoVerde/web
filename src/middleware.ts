@@ -3,7 +3,15 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const currentHour = new Date().getHours();
+  
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Bogota',
+    hour: 'numeric',
+    hour12: false,
+  });
+
+  const currentHour = Number(formatter.format(new Date())) 
+  ;
   const open = currentHour > 7 && currentHour < 21
 
   const pathname = request.nextUrl.pathname
