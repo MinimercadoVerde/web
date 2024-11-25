@@ -88,11 +88,12 @@
     height: 10rem;
 
 }
-
+/* 
 .image-input:has(:valid) {
-    border-color: var(--green-500); /* border-green-400 */
-    background-color: var(--green-100); /* bg-green-100 */
-}
+    border-color: var(--green-500);
+    background-color: var(--green-100);
+} */
+
 .input-image {
     position: relative;
     display: grid;

@@ -71,7 +71,7 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
                     </div>
                     <div className='h-24 flex flex-col   bg-white'>
 
-                        <Description description={description} />
+                        {/* <Description description={description} /> */}
                         <div className=" flex-grow w-full flex gap-5 items-center justify-center py-2 text-xl">
                             {
                                 stockStatus === 'out' ? 

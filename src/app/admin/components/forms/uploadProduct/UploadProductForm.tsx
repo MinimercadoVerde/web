@@ -5,12 +5,10 @@ import { useForm, FormProvider } from 'react-hook-form'
 import '../forms-styles.css'
 import Input from './Input'
 import BarcodeInputs from './BarcodeInputs'
-import ImageInput from './ImageInput'
 import CategorySelector from './CategorySelector'
 import PriceInput from './PriceInput'
 import { uploadProduct } from '@/lib/mongo/products'
 import productSchema, { UploadProduct } from '../productResolver';
-import { Product } from '@/model/product'
 import BrandInput from './BrandInput'
 import CostPriceInput from './CostPriceInput'
 
@@ -27,7 +25,7 @@ const UploadProductForm = () => {
     resolver: yupResolver(productSchema),
   })
 
-  const {control, formState, getValues, reset} = form
+  const {control, formState, getValues, reset, setFocus} = form
 
   const handleUploadProduct = async () => {
    setFormStatus("submitting")
@@ -35,6 +33,7 @@ const UploadProductForm = () => {
 
    const result = await uploadProduct(product)
     if(!result) return setFormStatus("failed")
+      setFocus('barcode')
       setFormStatus("submitted")
       setStage(0)
       reset()
@@ -56,13 +55,13 @@ const UploadProductForm = () => {
               <StageContext.Provider value={{ stage, setStage }}>
                 <BarcodeInputs />
                 {/* <ImageInput />  no available while uploading initial products change showAt order when complete*/}
-                <BrandInput showAt={1} />
-                <Input id="name" name="name" label='Nombre' showAt={2} required />
-                <Input id="description" name="description" label='Descripción' showAt={3} required />
-                <Input id="measure" name="measure" label='Medida' showAt={4} required />
-                <CostPriceInput showAt={5}/>
-                <PriceInput showAt={6} />
-                <CategorySelector showAt={7} />
+                <Input id="name" name="name" label='Nombre' showAt={1} required />
+                <BrandInput showAt={2} />
+                {/* <Input id="description" name="description" label='Descripción' showAt={3} required /> */}
+                <Input id="measure" name="measure" label='Medida' showAt={3} required />
+                <CostPriceInput showAt={4}/>
+                <PriceInput showAt={5} />
+                <CategorySelector showAt={6} />
               </StageContext.Provider>
             </FormProvider>
             {formState.isValid && <button type='submit' className='submit-button'> Crear producto </button>}

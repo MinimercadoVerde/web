@@ -58,40 +58,40 @@ export async function querySearch(query: string) {
                 }
             }
         ]).toArray();
-                
+
         return JSON.stringify(result)
     } catch (error: any) {
         throw new Error(error)
-    }  
+    }
 }
 
 export async function findByBarcode(barcode: string) {
     try {
         await init()
-        
+
         const result = await products.findOne({ _id: ObjectId.createFromTime(parseInt(barcode)) })
 
         return result?.barcode && JSON.stringify(result)
-        
+
     } catch (error: any) {
         throw new Error(error)
-    }  
+    }
 }
 
 
 export async function uploadProduct(product: UploadProduct) {
-    const { barcode, name, price, description, brand, category,  measure, subcategory, costPrice } = product
+    const { barcode, name, price, brand, category, measure, subcategory, costPrice } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
-    const productPayload:OptionalId<Product> = {
+    const productPayload: OptionalId<Product> = {
         _id: ObjectId.createFromTime(parseInt(barcode)),
         searchString,
         barcode,
         name: formatName(name),
         price,
         brand: formatName(brand),
-        description,
-        image: '', // default while uploading initial products
+        description: '', // default '' while uploading initial products
+        image: '', // default '' while uploading initial products
         measure,
         category,
         subcategory,
@@ -106,25 +106,25 @@ export async function uploadProduct(product: UploadProduct) {
         return JSON.stringify(result)
     } catch (error: any) {
         throw new Error(error)
-    }  
+    }
 }
 
-export async function getProductsByCategory (category: Category) {
+export async function getProductsByCategory(category: Category) {
 
-try {
-    await init()
-    const result = await products.find({ category },{projection:{_id: 0}}).toArray();
-    return result
-} catch (error: any) {
-    throw new Error(error)
-    
-}
-}
-export async function getProductsBySubcategory (subcategory: Subcategories[Category]){
- 
     try {
         await init()
-        const result = await products.find({ subcategory },{projection:{_id: 0}}).toArray();
+        const result = await products.find({ category }, { projection: { _id: 0 } }).toArray();
+        return result
+    } catch (error: any) {
+        throw new Error(error)
+
+    }
+}
+export async function getProductsBySubcategory(subcategory: Subcategories[Category]) {
+
+    try {
+        await init()
+        const result = await products.find({ subcategory }, { projection: { _id: 0 } }).toArray();
         return result
     } catch (error: any) {
         throw new Error(error)
@@ -135,15 +135,15 @@ export async function getProductsByStockStatus(status: StockStatus) {
 
     try {
         await init()
-        const result = await products.find({ stockStatus: status },{projection:{_id: 0}}).toArray();
+        const result = await products.find({ stockStatus: status }, { projection: { _id: 0 } }).toArray();
         return result
     } catch (error: any) {
         throw new Error(error)
     }
 }
 
-export async function editProduct (product: UploadProduct) {
-    const { barcode, name, price, description, brand, category, image, measure, subcategory } = product
+export async function editProduct(product: UploadProduct) {
+    const { barcode, name, price, description, brand, category,costPrice, image, measure, subcategory } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload = {
@@ -155,21 +155,23 @@ export async function editProduct (product: UploadProduct) {
         description,
         image,
         measure,
+        costPrice,
         category,
         subcategory,
         stock: 0
     }
     try {
         await init()
-        const result = await products.updateOne({_id: ObjectId.createFromTime(parseInt(barcode)), barcode }, {$set: productPayload})
+        const result = await products.updateOne({ _id: ObjectId.createFromTime(parseInt(barcode)), barcode }, { $set: productPayload })
+        result.modifiedCount > 0 && revalidatePath('/', 'layout')
         return JSON.stringify(result)
     } catch (error: any) {
         throw new Error(error)
-    }  
+    }
 }
 
 
-export async function setProductStockStatus (barcode: string, status: StockStatus ) {
+export async function setProductStockStatus(barcode: string, status: StockStatus) {
     try {
         await init()
         const result = await products.updateOne({ _id: ObjectId.createFromTime(parseInt(barcode)) }, { $set: { stockStatus: status } })
@@ -177,5 +179,25 @@ export async function setProductStockStatus (barcode: string, status: StockStatu
         return JSON.stringify(result)
     } catch (error: any) {
         throw new Error(error)
-    }  
+    }
+}
+
+export async function getAllProducts() {
+    try {
+        await init()
+        const result = await products.find({}).toArray();
+        return JSON.stringify(result)
+    } catch (err:any) {
+        throw new Error(err.message)
+    }
+}
+
+export async function getWithoutImageProducts () {
+    try {
+        await init()
+        const result = await products.find({ image: '' }).toArray();
+        return JSON.stringify(result)
+    } catch (err:any) {
+        throw new Error(err.message)
+    }
 }

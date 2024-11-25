@@ -33,7 +33,7 @@ const ImageInput = () => {
     setImageState("loaded");
   };
   return (
-    <div className="image-input" onClick={() => inputRef.current?.click()}>
+    <div className={`image-input ${!imageId && 'border-red-500'}`} onClick={() => inputRef.current?.click()}>
       {(() => {
         switch (imageState) {
           case "loading":
@@ -74,7 +74,9 @@ const ImageInput = () => {
         readOnly
         ref={inputRef}
       />
-      <input {...register("image")} hidden required />
+      <input {...register("image")} hidden
+      //required not required while uploading initial products
+      />
     </div>
   );
 };

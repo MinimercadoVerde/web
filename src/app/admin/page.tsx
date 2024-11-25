@@ -1,42 +1,39 @@
-'use client'
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { getInitialOrders } from "@/lib/redux/reducers/orders";
-import { useEffect } from "react";
+import { formatPrice } from "@/globalFunctions";
+import { getWithoutImageProducts } from "@/lib/mongo/products";
+import { Product } from "@/model/product";
+import Link from "next/link";
+import { MdOutlineArrowOutward } from "react-icons/md";
 
-const AdminPage = () => {
-const orders = useAppSelector(state => state.orders)
-const pendingOrders = orders.orders.filter(order => order.status === 'pending');
-const packedOrders = orders.orders.filter(order => order.status === 'packed');
-const dispatch = useAppDispatch()
-
-useEffect(() => {
-  dispatch(getInitialOrders())
-}, [])
+const AdminPage = async () => {
+  const result = await getWithoutImageProducts();
+  const products: Product[] = JSON.parse(result);
 
   return (
-    <section className="grid size-full grid-flow-col">
-      <div className="bg-blue-500">
-        <span>Ordenes pendientes</span>
-        <div>
-          {pendingOrders.map((order, index) => (
-            <div key={index}>
-              <p>Pedido #{order.customerName} - Total: ${order.totalPrice}</p>
-            </div>
-          ))}
-        </div>
-        <span>Ordenes empacadas</span>
-        <div>
-          {packedOrders.map((order, index) => (
-            <div key={index}>
-              <p>Pedido #{order.customerName} - Total: ${order.totalPrice}</p>
-            </div>
-          ))}
-        </div>
+    <div className="p-5">
+      <h1 className="my-10 text-xl font-semibold">Productos sin imagenes</h1>
+      <ul className="flex flex-wrap gap-3">
+        {products.map((product) => (
+          <NoImageProduct key={product.barcode} product={product} />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const NoImageProduct = ({ product }: { product: Product }) => {
+  const { barcode, price, name, brand, measure } = product;
+  const fullName = `${name} - ${brand} - ${measure}`;
+  return (
+    <li className="max-w-sm bg-gray-100 p-2">
+      <span className="line-clamp-2 h-14 text-lg">{fullName}</span>
+      <div className="flex justify-between">
+        <span>{formatPrice(price)}</span>
+        <Link href={`/admin/edit-product/${barcode}`} className="flex">
+          Editar
+          <MdOutlineArrowOutward className="text-xl text-blue-500" />{" "}
+        </Link>
       </div>
-      <div className="bg-green-500">
-        <span>ordenes entregadas</span>
-      </div>
-    </section>
+    </li>
   );
 };
 

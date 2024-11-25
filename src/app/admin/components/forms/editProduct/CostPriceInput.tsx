@@ -31,7 +31,6 @@ const CostPriceInput = () => {
                 onKeyDown={handleClickEnter}
                 {...register("costPrice", { onChange: () => trigger("costPrice") })}
                 min={50}
-                step={50}
                 className={`${errors["costPrice"] && "input-invalid"} ${valid && "input-valid"} input flex justify-between peer`} required
             />
             <span className='absolute right-20 top-0 text-green-600 peer-invalid:text-red-500'>{value}</span>

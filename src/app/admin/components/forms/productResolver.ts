@@ -3,13 +3,12 @@ import * as yup from "yup"
 
 export type UploadProduct = {
     barcode: string;
-    confirmBarcode: string;
     name: string;
     measure: string;
     costPrice: number;
     price: number;
     brand: Brand | string;
-    description: string;
+    description?: string;
     image?: string; // Not required when uploading initial products
     category: Category;
     subcategory: Subcategories[Category];
@@ -17,7 +16,6 @@ export type UploadProduct = {
 
 const productSchema: yup.ObjectSchema<UploadProduct> = yup.object({
     barcode: yup.string().required("Ingresa el código de barras del producto"),
-    confirmBarcode: yup.string().oneOf([yup.ref("barcode")], "los códigos de barras no coinciden").required("Ingresa de nuevo el código de barras."),
     name: yup.string().required("Por favor ingresa el nombre del producto"),
     measure: yup.string().required(),
     costPrice: yup.number().typeError("Ingresa el costo del producto").required(),
@@ -27,7 +25,7 @@ const productSchema: yup.ObjectSchema<UploadProduct> = yup.object({
         value => isValidStep(50, value)
     ).required().typeError("Por favor ingresa el precio del producto"),
     brand: yup.string().required("Por favor ingresa la marca del producto"),
-    description: yup.string().required("Añade una descripción al producto"),
+    description: yup.string(),
     image: yup.string()
     // .required() Not required when uploading initial products
     ,

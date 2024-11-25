@@ -1,7 +1,5 @@
 'use client'
 import { camelCaseToTitleCase } from '@/globalFunctions';
-import { Category } from '@/model/product';
-import React, { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form';
 import { UploadProduct } from '../productResolver';
 import { categories, subcategories } from '../../productConsts';

@@ -24,7 +24,7 @@ const ImageInput = () => {
         const formData = new FormData()
         formData.append('newProductImage', file)
 
-        const cloudinaryData: any = await uploadImage(formData, getValues("confirmBarcode").toString())
+        const cloudinaryData: any = await uploadImage(formData, getValues("barcode").toString())
 
         if (!cloudinaryData.public_id) return;
         stage === 1 && setStage(2)

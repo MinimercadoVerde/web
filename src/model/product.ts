@@ -24,7 +24,7 @@ export interface Product {
     costPrice: number;
     price: number;
     brand: Brand | string;
-    description: string;
+    description?: string;
     image: string;
     category: Category;
     subcategory: Subcategories[Category];
