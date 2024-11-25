@@ -55,14 +55,14 @@ const UploadProductForm = () => {
             <FormProvider {...form}>
               <StageContext.Provider value={{ stage, setStage }}>
                 <BarcodeInputs />
-                <ImageInput />
-                <BrandInput showAt={2} />
-                <Input id="name" name="name" label='Nombre' showAt={3} required />
-                <Input id="description" name="description" label='Descripción' showAt={4} required />
-                <Input id="measure" name="measure" label='Medida' showAt={5} required />
-                <CostPriceInput showAt={6}/>
-                <PriceInput showAt={7} />
-                <CategorySelector showAt={8} />
+                {/* <ImageInput />  no available while uploading initial products change showAt order when complete*/}
+                <BrandInput showAt={1} />
+                <Input id="name" name="name" label='Nombre' showAt={2} required />
+                <Input id="description" name="description" label='Descripción' showAt={3} required />
+                <Input id="measure" name="measure" label='Medida' showAt={4} required />
+                <CostPriceInput showAt={5}/>
+                <PriceInput showAt={6} />
+                <CategorySelector showAt={7} />
               </StageContext.Provider>
             </FormProvider>
             {formState.isValid && <button type='submit' className='submit-button'> Crear producto </button>}

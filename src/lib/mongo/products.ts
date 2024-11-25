@@ -4,6 +4,7 @@ import clientPromise from "."
 import { Category, Product, StockStatus, Subcategories } from "@/model/product";
 import { formatName } from "@/globalFunctions";
 import { revalidatePath } from "next/cache";
+import { UploadProduct } from "@/app/admin/components/forms/productResolver";
 
 let client: MongoClient;
 let db: Db;
@@ -78,8 +79,8 @@ export async function findByBarcode(barcode: string) {
 }
 
 
-export async function uploadProduct(product: Product) {
-    const { barcode, name, price, description, brand, category, image, measure, subcategory, costPrice } = product
+export async function uploadProduct(product: UploadProduct) {
+    const { barcode, name, price, description, brand, category,  measure, subcategory, costPrice } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload:OptionalId<Product> = {
@@ -90,7 +91,7 @@ export async function uploadProduct(product: Product) {
         price,
         brand: formatName(brand),
         description,
-        image,
+        image: '', // default while uploading initial products
         measure,
         category,
         subcategory,
@@ -141,7 +142,7 @@ export async function getProductsByStockStatus(status: StockStatus) {
     }
 }
 
-export async function editProduct (product: Product) {
+export async function editProduct (product: UploadProduct) {
     const { barcode, name, price, description, brand, category, image, measure, subcategory } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 

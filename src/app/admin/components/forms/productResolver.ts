@@ -10,7 +10,7 @@ export type UploadProduct = {
     price: number;
     brand: Brand | string;
     description: string;
-    image: string;
+    image?: string; // Not required when uploading initial products
     category: Category;
     subcategory: Subcategories[Category];
 }
@@ -28,7 +28,9 @@ const productSchema: yup.ObjectSchema<UploadProduct> = yup.object({
     ).required().typeError("Por favor ingresa el precio del producto"),
     brand: yup.string().required("Por favor ingresa la marca del producto"),
     description: yup.string().required("Añade una descripción al producto"),
-    image: yup.string().required(),
+    image: yup.string()
+    // .required() Not required when uploading initial products
+    ,
     category: yup.mixed<Category>().oneOf([
         "canastaFamiliar", "higienePersonal", "mecato", "licor", "aseo", "bebidas", "mascotas"
     ]).required(),
