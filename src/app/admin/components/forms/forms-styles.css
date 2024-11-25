@@ -95,6 +95,8 @@
 }
 .input-image {
     position: relative;
+    display: grid;
+    place-content: center;
     height: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
