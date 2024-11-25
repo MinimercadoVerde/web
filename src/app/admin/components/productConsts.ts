@@ -14,6 +14,7 @@ const brands: Brand[] = [
     "Mondelez",
     "Unilever",
     "Johnson & Johnson",
+    "Procter & Gamble",
     "Bimbo",
     "Grupo Familia",
     "Ramo"
