@@ -13,10 +13,10 @@ const page = () => {
           <span>Vuelve a visitarnos cuando estemos disponibles.</span>
           <span>Estaremos encantados de atenderte. 😊 </span>
         </div>
-        <div className="text-3xl font-semibold flex flex-col">
+        {/* <div className="text-3xl font-semibold flex flex-col">
           <span>Lunes - Viernes</span>
           <b>7 AM - 9 PM</b>
-        </div>
+        </div> */} 
       </div>
     </section>
   );
