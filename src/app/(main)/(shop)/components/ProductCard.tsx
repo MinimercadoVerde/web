@@ -1,26 +1,36 @@
-import { Product } from "@/model/product"
-import AddToCart from "./AddToCart"
-import { formatPrice } from "@/globalFunctions"
-import ProductImage from "@/components/ProductImage"
+import { Product } from "@/model/product";
+import AddToCart from "./AddToCart";
+import { formatPrice } from "@/globalFunctions";
+import ProductImage from "@/components/ProductImage";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const { name, image, measure, price, stockStatus } = product
+  const { name, image, measure, price, stockStatus } = product;
 
-  const labelPrice = formatPrice(price)
+  const labelPrice = formatPrice(price);
   return (
-    <div className="group bg-white relative min-w-32 max-w-40 overflow-visible shadow-md rounded-md">
-      {stockStatus !== 'out' && <AddToCart product={product} />}
+    <div className="group relative w-36 overflow-visible rounded-md bg-white shadow-md size-full">
+      {stockStatus !== "out" && <AddToCart product={product} />}
       <div className="p-2">
-        <ProductImage src={image} alt={name} />
-        <h3 className="line-clamp-2 leading-4 font-medium tracking-wide my-2">{name}</h3>
-        <div className="flex justify-between">
-          <span className=" text-slate-500 text-sm">{measure}</span>
-          <span className=" font-medium text-slate-600 text-sm">{labelPrice}</span>
+        <div className="w-full">
+          <ProductImage src={image} alt={name} />
         </div>
-        {stockStatus === 'out' && <span className="text-red-600 font-semibold absolute top-1/2 bg-white/80 px-3">Agotado</span>}
+        <h3 className="my-2 line-clamp-2 font-medium leading-4 tracking-wide h-8">
+          {name}
+        </h3>
+        <div className="flex justify-between">
+          <span className="text-sm text-slate-500">{measure}</span>
+          <span className="text-sm font-medium text-slate-600">
+            {labelPrice}
+          </span>
+        </div>
+        {stockStatus === "out" && (
+          <span className="absolute top-1/2 bg-white/80 px-3 font-semibold text-red-600">
+            Agotado
+          </span>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductCard
+export default ProductCard;

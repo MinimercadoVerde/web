@@ -10,17 +10,23 @@ import { IoIosArrowBack } from "react-icons/io";
 const Basket = () => {
   const pathname = usePathname();
   const [openCartList, setOpenCartList] = useState(false);
+  const [currentCount, setCurrentCount] = useState(0);
   const { itemsCount } = useCart();
   const [bounce, setBounce] = useState(false);
 
   useEffect(() => {
-    if (!bounce) {
-      setBounce(true);
+    setCurrentCount((current) => {
+      if (current < itemsCount) {
+        if (!bounce) {
+          setBounce(true);
 
-      setTimeout(() => {
-        setBounce(false);
-      }, 500);
-    }
+          setTimeout(() => {
+            setBounce(false);
+          }, 500);
+        }
+      }
+      return itemsCount;
+    });
   }, [itemsCount]);
 
   const moveBasketToCorner =
@@ -37,11 +43,12 @@ const Basket = () => {
         onClick={() => setOpenCartList(!openCartList)}
       >
         <div
-          className={`relative size-full rounded-full bg-blue-100 p-1 text-6xl text-blue-900 shadow-md ${bounce && "animate-bounce"}`}
+          className={`relative size-full rounded-full bg-blue-100 p-1 text-6xl text-blue-900 shadow-md ${bounce && "animate-basket"}`}
+          id="basket"
         >
           {itemsCount > 0 && (
             <div className="absolute inset-1/2 grid aspect-square w-7 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-green-500">
-              <b className="font-mono text-lg text-white">{itemsCount}</b>
+              <b className="font-mono text-lg text-white">{currentCount}</b>
             </div>
           )}
           <LuShoppingBasket />
