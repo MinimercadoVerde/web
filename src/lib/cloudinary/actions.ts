@@ -10,13 +10,17 @@ cloudinary.config({
 });
 
 export async function uploadImage(formData: FormData, name: string) {
-    const image = formData.get('newProductImage') as File;   
+
+    const image = formData.get('newProductImage') as File;
     const arrayBuffer = await image.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
+    
     const cloudinaryResponse = await new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_stream({folder: "minimarket", }, function (error, result) {
-            if (error) { reject(error); console.log(error.message);
-            ;throw new Error(error.message); };
+        cloudinary.uploader.upload_stream({ folder: "minimarket", public_id: name, invalidate: true, overwrite: true }, function (error, result) {
+            if (error) {
+                reject(error); console.log(error.message);
+                ; throw new Error(error.message);
+            };
             resolve(result as CloudinaryUploadWidgetInfo)
 
         }).end(buffer)
@@ -25,10 +29,18 @@ export async function uploadImage(formData: FormData, name: string) {
     return cloudinaryResponse;
 }
 
-export async function updateImage (public_id: string) {
+export const destroyImage = async (public_id: string) => {
+
     const cloudinaryResponse = await new Promise((resolve, reject) => {
-        cloudinary.uploader.destroy(public_id, {})
-    }
-    )
+        cloudinary.uploader.destroy(public_id,{invalidate: true}, function (error, result) {
+            if (error) {
+                reject(error); console.log(error.message);
+                ; throw new Error(error.message);
+            };
+            resolve(result)
+        })
+    })
+
     return cloudinaryResponse;
+
 }
