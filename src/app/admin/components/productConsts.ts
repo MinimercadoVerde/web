@@ -28,6 +28,7 @@ const subcategories: { [K in keyof Subcategories]: Subcategories[K][] } = {
     aseo: ['jabón en polvo', 'lavaloza', 'limpiadores', 'esponjas', 'detergente', 'cloro', 'suavizante', 'otros'],
     bebidas: ['gaseosas', 'jugos', 'agua', 'té', 'café', 'leche', 'bebidas energéticas', 'otros'],
     mascotas: ['juguetes', 'alimento', 'accesorios', 'higiene', 'otros'],
+    otra: ['no aplica']
 };
 
 const categories: Category[] = ['canastaFamiliar', 'higienePersonal', 'mecato', 'licor', 'aseo', 'bebidas', 'mascotas'];

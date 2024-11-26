@@ -10,6 +10,7 @@ export type Subcategories = {
     aseo: 'jabón en polvo' | 'lavaloza' | 'limpiadores' | 'esponjas' | 'detergente' | 'cloro' | 'suavizante' | 'otros';
     bebidas: 'gaseosas' | 'jugos' | 'agua' | 'té' | 'café' | 'leche' | 'bebidas energéticas' | 'otros';
     mascotas: 'juguetes' | 'alimento' | 'accesorios' | 'higiene' | 'otros';   
+    otra: 'no aplica'
 };
 
 export type Category = keyof Subcategories;
