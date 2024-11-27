@@ -39,6 +39,7 @@ const EditProductForm = ({ product }: { product: Product }) => {
         <ImageInput />
         <CostPriceInput />
         <PriceInput />
+        <Input name="measure" label="Medida" />
         <Input name="description" label='Descripción' defaultValue=" " />
         <CategorySelector />
         <DevTool {...form} />
