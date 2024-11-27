@@ -30,7 +30,7 @@ const productSchema: yup.ObjectSchema<UploadProduct> = yup.object({
     // .required() Not required when uploading initial products
     ,
     category: yup.mixed<Category>().oneOf([
-        "canastaFamiliar", "higienePersonal", "mecato", "licor", "aseo", "bebidas", "mascotas"
+        "canastaFamiliar", "higienePersonal", "mecato", "licor", "aseo", "bebidas", "mascotas", "otra"
     ]).required(),
     subcategory: yup.mixed<Subcategories[keyof Subcategories]>().test('is-valid-subcategory', 'Selecciona una subcategoría', (value) => (value?.length != 0)).required(),
 })

@@ -31,6 +31,6 @@ const subcategories: { [K in keyof Subcategories]: Subcategories[K][] } = {
     otra: ['no aplica']
 };
 
-const categories: Category[] = ['canastaFamiliar', 'higienePersonal', 'mecato', 'licor', 'aseo', 'bebidas', 'mascotas'];
+const categories: Category[] = ['canastaFamiliar', 'higienePersonal', 'mecato', 'licor', 'aseo', 'bebidas', 'mascotas', 'otra'];
 
 export { categories, subcategories, brands };
