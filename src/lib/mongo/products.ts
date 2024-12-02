@@ -1,10 +1,12 @@
 'use server'
 import { Collection, Db, MongoClient, ObjectId, OptionalId } from "mongodb";
 import clientPromise from "."
-import { Category, Product, StockStatus, Subcategories } from "@/model/product";
+import { BaseProduct, Category, Product, StockStatus, SubCategory } from "@/model/product";
 import { formatName } from "@/globalFunctions";
 import { revalidatePath } from "next/cache";
 import { UploadProduct } from "@/app/admin/components/forms/productResolver";
+import axios from "axios";
+import { z } from "zod"
 
 let client: MongoClient;
 let db: Db;
@@ -69,7 +71,7 @@ export async function findByBarcode(barcode: string) {
     try {
         await init()
 
-        const result = await products.findOne({ _id: ObjectId.createFromTime(parseInt(barcode)) })
+        const result = await products.findOne({ barcode: barcode })
 
         return result?.barcode && JSON.stringify(result)
 
@@ -84,7 +86,6 @@ export async function uploadProduct(product: UploadProduct) {
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload: OptionalId<Product> = {
-        _id: ObjectId.createFromTime(parseInt(barcode)),
         searchString,
         barcode,
         name: formatName(name),
@@ -99,11 +100,28 @@ export async function uploadProduct(product: UploadProduct) {
         stockStatus: 'available'
     }
 
+    const baseProductPayload: BaseProduct = {
+        barcode,
+        name: formatName(name),
+        measure,
+        brand: formatName(name),
+        description: '',
+        image: '',
+        category,
+        subcategory
+    }
+
+
+    const uploadToMain = await axios.post(`${process.env.MINIMARKETS_URL}/api/products`, baseProductPayload).then(response => response).catch((error) => { console.log(error.message); return null })
+
+    if (!uploadToMain?.data.acknowledged) return null;
+
     try {
         await init()
         const result = await products.insertOne(productPayload)
         result.insertedId && revalidatePath('/', 'layout')
         return JSON.stringify(result)
+
     } catch (error: any) {
         throw new Error(error)
     }
@@ -120,7 +138,7 @@ export async function getProductsByCategory(category: Category) {
 
     }
 }
-export async function getProductsBySubcategory(subcategory: Subcategories[Category]) {
+export async function getProductsBySubcategory(subcategory: SubCategory<Category>) {
 
     try {
         await init()
@@ -142,8 +160,35 @@ export async function getProductsByStockStatus(status: StockStatus) {
     }
 }
 
-export async function editProduct(product: UploadProduct) {
-    const { barcode, name, price, description, brand, category,costPrice, image, measure, subcategory } = product
+const editableSchema = z.object({
+    stockStatus: z.enum(['low', 'available', 'out']),
+    price: z.number().multipleOf(50),
+    costPrice: z.number(),
+})
+
+export async function updateProductValues(barcode: string, body: Object ) {
+
+    const keys = Object.keys(body)
+    if (!(keys.length > 0)) return { error: 'Body cannot be empty' , success: false}
+
+    const bodyValues = editableSchema.partial().safeParse(body)
+    if (!bodyValues.success) return {...bodyValues.error.formErrors.fieldErrors, success: false}
+
+    try {
+
+        await init()
+        const result = await products.updateOne({ barcode }, { $set: body })
+        if (result.matchedCount <= 0) return {error: 'Product not found'}
+
+        return {...result, success: result.matchedCount > 0}
+    } catch (error: any) {
+        throw new Error(error)
+    }
+}
+
+
+export async function updateProduct(product: UploadProduct) {
+    const { barcode, name, price, description, brand, category, costPrice, image, measure, subcategory } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload = {
@@ -162,7 +207,7 @@ export async function editProduct(product: UploadProduct) {
     }
     try {
         await init()
-        const result = await products.updateOne({ _id: ObjectId.createFromTime(parseInt(barcode)), barcode }, { $set: productPayload })
+        const result = await products.updateOne({ barcode }, { $set: productPayload })
         result.modifiedCount > 0 && revalidatePath('/', 'layout')
         return JSON.stringify(result)
     } catch (error: any) {
@@ -171,33 +216,22 @@ export async function editProduct(product: UploadProduct) {
 }
 
 
-export async function setProductStockStatus(barcode: string, status: StockStatus) {
-    try {
-        await init()
-        const result = await products.updateOne({ _id: ObjectId.createFromTime(parseInt(barcode)) }, { $set: { stockStatus: status } })
-        revalidatePath('/', 'layout')
-        return JSON.stringify(result)
-    } catch (error: any) {
-        throw new Error(error)
-    }
-}
-
 export async function getAllProducts() {
     try {
         await init()
         const result = await products.find({}).toArray();
         return JSON.stringify(result)
-    } catch (err:any) {
+    } catch (err: any) {
         throw new Error(err.message)
     }
 }
 
-export async function getWithoutImageProducts () {
+export async function getWithoutImageProducts() {
     try {
         await init()
         const result = await products.find({ image: '' }).toArray();
         return JSON.stringify(result)
-    } catch (err:any) {
+    } catch (err: any) {
         throw new Error(err.message)
     }
 }

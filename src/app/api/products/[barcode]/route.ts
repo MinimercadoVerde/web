@@ -1,7 +1,5 @@
-import { updateOrdersProducts } from "@/lib/mongo/orders"
-import { findByBarcode, setProductStockStatus } from "@/lib/mongo/products"
-import { Product, StockStatus } from "@/model/product"
-import { UpdateResult } from "mongodb"
+import {  findByBarcode, updateProductValues } from "@/lib/mongo/products"
+import { Product,  } from "@/model/product"
 import { NextRequest, NextResponse } from "next/server"
 
 const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
@@ -15,33 +13,27 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         }
         const product: Product = JSON.parse(res)
         return NextResponse.json(product, { status: 200, headers })
-    }catch {
+    } catch {
         return NextResponse.json({ error: 'Product not found' }, { status: 404, headers })
     }
- }
+}
 
 
-export async function POST(request: NextRequest, { params }: { params: Promise<{ barcode: string }> }) {
-    const {barcode} = await params
-    const searchParams = request.nextUrl.searchParams
-
-    const query = searchParams.get('setStatus') as StockStatus | null
-
-    if (!query) return NextResponse.json({ error: 'Invalid request' }, { status: 400, headers })
-
-    if (query !== "available" && query !== "low" && query !== "out") return NextResponse.json({ error: 'Invalid setStatus value' }, { status: 400, headers })
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ barcode: string }> }) {
+    const { barcode } = await params
 
     try {
+        const body = await request.json() as Object | undefined
+        if (!body) return NextResponse.json({ error: "Body not received" }, { status: 400, headers })
 
-        const res = await setProductStockStatus(barcode, query)
-        const product: UpdateResult<Product> = JSON.parse(res);
-        if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404, headers })
-        updateOrdersProducts(barcode, query)
-        return NextResponse.json(product, { status: product.matchedCount > 0 ? 200 : 404, headers })
+        const res =await updateProductValues(barcode, body)
+        
+        return NextResponse.json(res, {status: res.success? 200 : 400})
 
     } catch (error: any) {
 
-        return NextResponse.json({ error: error.message }, { status: 400 })
-    }
+        if (error.message === "Unexpected end of JSON input") return NextResponse.json({ error: "Body not received as expected" }, { status: 400, headers })
+        return NextResponse.json({ error: error.message }, { status: 500, headers })
 
+    }
 }
