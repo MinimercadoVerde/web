@@ -46,7 +46,7 @@ const UploadProductForm = () => {
     case "submitting":
       return <div>Cargando...</div>
     case "failed": 
-      return <span>Fallo al intentar crear el producto ... Por favor comunícate con tu proveedor de software</span>
+      return <h1 className='text-center font-bold text-4xl'>Fallo al intentar crear el producto ... Por favor comunícate con tu proveedor de software</h1>
     default:
       return(
         <>

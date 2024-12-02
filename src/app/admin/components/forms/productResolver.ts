@@ -1,4 +1,4 @@
-import { Brand, Category, Product, Subcategories } from "@/model/product"
+import { Brand, Category, SubCategory } from "@/model/product"
 import * as yup from "yup"
 
 export type UploadProduct = {
@@ -11,7 +11,7 @@ export type UploadProduct = {
     description?: string;
     image?: string; // Not required when uploading initial products
     category: Category;
-    subcategory: Subcategories[Category];
+    subcategory: SubCategory<Category>;
 }
 
 const productSchema: yup.ObjectSchema<UploadProduct> = yup.object({
@@ -32,7 +32,7 @@ const productSchema: yup.ObjectSchema<UploadProduct> = yup.object({
     category: yup.mixed<Category>().oneOf([
         "canastaFamiliar", "higienePersonal", "mecato", "licor", "aseo", "bebidas", "mascotas", "otra"
     ]).required(),
-    subcategory: yup.mixed<Subcategories[keyof Subcategories]>().test('is-valid-subcategory', 'Selecciona una subcategoría', (value) => (value?.length != 0)).required(),
+    subcategory: yup.mixed<SubCategory<Category>>().test('is-valid-subcategory', 'Selecciona una subcategoría', (value) => (value?.length != 0)).required(),
 })
 
 const isValidStep = (step: number, value?: number,) => {

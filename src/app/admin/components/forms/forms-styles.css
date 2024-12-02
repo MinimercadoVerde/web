@@ -19,7 +19,7 @@
     grid-auto-rows: auto;
     gap: 16px;
 }
-#editProductForm {
+#updateProductForm {
     max-width: 45rem;
     margin: 0 auto;
     padding: 2rem;
@@ -48,6 +48,7 @@
 .input, select {
     width: 100%;
     height: fit-content;
+    min-width: 15rem;
     place-self: center;
     padding: 0.5rem;
     border: 0.1rem solid #ccc;

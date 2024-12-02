@@ -1,6 +1,4 @@
-import { Brand, Category, Subcategories } from "@/model/product";
-
-const brands: Brand[] = [
+const brands = [
     "Alpina",
     "Colanta",
     "Pepsi",
@@ -18,9 +16,9 @@ const brands: Brand[] = [
     "Bimbo",
     "Grupo Familia",
     "Ramo"
-];
+] as const;
 
-const subcategories: { [K in keyof Subcategories]: Subcategories[K][] } = {
+const categories = {
     canastaFamiliar: ['parva', 'arepas', 'granos', 'lácteos', 'enlatados', 'aceites', 'matequillas', 'condimentos', 'otros'],
     higienePersonal: ['crema dental', 'jabón', 'shampoo', 'desodorante', 'talco', 'toallas higiénicas', 'cepillo de dientes', 'papel higiénico'],
     mecato: ['paquetes', 'helados', 'gomitas', 'chocolates', 'galletas', 'snacks', 'dulces', 'otros'],
@@ -31,6 +29,5 @@ const subcategories: { [K in keyof Subcategories]: Subcategories[K][] } = {
     otra: ['no aplica']
 };
 
-const categories: Category[] = ['canastaFamiliar', 'higienePersonal', 'mecato', 'licor', 'aseo', 'bebidas', 'mascotas', 'otra'];
 
-export { categories, subcategories, brands };
+export {  categories, brands };

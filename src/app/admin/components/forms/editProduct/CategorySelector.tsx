@@ -2,8 +2,7 @@
 import { camelCaseToTitleCase } from '@/globalFunctions';
 import { useFormContext } from 'react-hook-form';
 import { UploadProduct } from '../productResolver';
-import { categories, subcategories } from '../../productConsts';
-
+import { categories } from '../../productConsts';
 
 const CategorySelector = () => {
     const { register, getValues } = useFormContext<UploadProduct>()
@@ -15,7 +14,7 @@ const CategorySelector = () => {
                 <select required
                     {...register("category")}>
                     <option value="" ></option>
-                    {categories.map((category) => (
+                    {Object.keys(categories).map((category) => (
                         <option key={category} value={category}>
                             {camelCaseToTitleCase(category)}
                         </option>
@@ -27,7 +26,7 @@ const CategorySelector = () => {
                 <span className='text-sm font-semibold text-gray-600' >Sub categoría</span>
                 <select {...register("subcategory")} required>
                     <option value="" ></option>
-                    {subcategories[getValues("category")].map((subcategory) => (
+                    {categories[getValues("category")].map((subcategory) => (
                         <option key={subcategory} value={subcategory}>
                             {camelCaseToTitleCase(subcategory)}
                         </option>

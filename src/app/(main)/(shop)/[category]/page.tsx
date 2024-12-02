@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link';
 import { IoIosArrowBack } from 'react-icons/io';
 import { camelCaseToTitleCase } from '@/globalFunctions';
-import { subcategories } from '@/app/admin/components/productConsts';
+import { categories } from '@/app/admin/components/productConsts';
 import CategorySelector from './CategorySelector';
 import ProductCard from '../components/ProductCard';
 
@@ -24,7 +24,7 @@ const CategoryPage = async ({ params }: { params: { category: Category } }) => {
             </div>
             <div>
             <ul className='flex flex-wrap gap-7 justify-center my-6'>
-                {subcategories[category].map((value, key) => (
+                {categories[category].map((value, key) => (
                     <li key={key}>
                         <Link href={`/${category}/${value}`} className='text-blue-900 font-medium hover:underline'>
                             {camelCaseToTitleCase(value)}

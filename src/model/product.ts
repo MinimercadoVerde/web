@@ -1,34 +1,28 @@
+import { brands, categories } from "@/app/admin/components/productConsts";
 import { ObjectId } from "mongodb";
 
-export type Brand = "Alpina" | "Colanta" | "Pepsi" | "Coca Cola" | "Bavaria" | "Postobon" | "Nestle" | "Doria" | "Quala" | "Nutresa" | "Mondelez" | "Unilever" | "Johnson & Johnson" | "Bimbo" | "Grupo Familia" | "Ramo" | "Procter & Gamble";
+export type Brand = typeof brands[number]; 
 
-export type Subcategories = {
-    canastaFamiliar: 'parva' | 'arepas' | 'granos' | 'lácteos' | 'enlatados' | 'aceites' | 'matequillas'  | 'condimentos' | 'otros';
-    higienePersonal: 'crema dental' | 'jabón' | 'shampoo' | 'desodorante' | 'talco' | 'toallas higiénicas' | 'cepillo de dientes' | 'papel higiénico'  ;
-    mecato: 'paquetes' | 'helados' | 'gomitas' | 'chocolates' | 'galletas'| 'snacks' | 'dulces' | 'otros' ;
-    licor: 'vino' | 'whisky'  | 'tequila' | 'vodka' | 'cerveza' | 'ron' | 'aguardiente' | 'otros';
-    aseo: 'jabón en polvo' | 'lavaloza' | 'limpiadores' | 'esponjas' | 'detergente' | 'cloro' | 'suavizante' | 'otros';
-    bebidas: 'gaseosas' | 'jugos' | 'agua' | 'té' | 'café' | 'leche' | 'bebidas energéticas' | 'otros';
-    mascotas: 'juguetes' | 'alimento' | 'accesorios' | 'higiene' | 'otros';   
-    otra: 'no aplica'
-};
+export type Category = keyof typeof categories;
 
-export type Category = keyof Subcategories;
-
+export type SubCategory<C extends Category> = typeof categories[C][number];
 export type StockStatus = 'low' | 'available' | 'out';
 
-export interface Product {
-    searchString?: string;
+export interface BaseProduct {
     barcode: string;
     name: string;
     measure: string;
-    costPrice: number;
-    price: number;
     brand: Brand | string;
     description?: string;
     image: string;
     category: Category;
-    subcategory: Subcategories[Category];
+    subcategory: SubCategory<Category>;
+}
+
+export interface Product extends BaseProduct {
+    searchString?: string;
+    costPrice: number;
+    price: number;
     stockStatus?: StockStatus;
     stock?: number;
 }
@@ -44,5 +38,5 @@ export interface ProductByCategory<T extends Category> {
     description: string;
     image: string;
     category: T;
-    subcategory: Subcategories[T];
+    subcategory: SubCategory<T>;
 }

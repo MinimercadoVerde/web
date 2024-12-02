@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, KeyboardEventHandler, useContext, useState } from 'react'
+import React, { ChangeEventHandler, KeyboardEventHandler, useContext, useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { StageContext } from './UploadProductForm'
 import { UploadProduct } from '../productResolver'
@@ -26,6 +26,10 @@ const CostPriceInput = ({ showAt }: { showAt: number }) => {
         setStage((stage) => stage + 1)
     }
     
+    useEffect(() => {
+        if( stage < showAt ) {setValue(formatPrice(0))}
+     }, [stage])
+
     return (
         <>
             {stage >= showAt &&

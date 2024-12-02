@@ -11,7 +11,7 @@ import CategorySelector from './CategorySelector'
 import ImageInput from './ImageInput'
 import { DevTool } from "@hookform/devtools";
 import { useState } from 'react'
-import { editProduct } from '@/lib/mongo/products'
+import { updateProduct } from '@/lib/mongo/products'
 import CostPriceInput from './CostPriceInput'
 
 const EditProductForm = ({ product }: { product: Product }) => {
@@ -23,7 +23,7 @@ const EditProductForm = ({ product }: { product: Product }) => {
     
     setFormStatus("submitting")
     const updatedProduct = getValues()
-    const result = await editProduct(updatedProduct)
+    const result = await updateProduct(updatedProduct)
     if (!result) return setFormStatus("failed")
     setFormStatus("submitted")
     alert("Producto actualizado con éxito")

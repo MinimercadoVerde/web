@@ -3,7 +3,7 @@ import { Product } from '@/model/product'
 import React from 'react'
 import EditProductForm from '../../components/forms/editProduct/EditProductForm'
 
-const editProductByBarcode = async ({params}: {params:{barcode: string}}) => {
+const updateProductByBarcode = async ({params}: {params:{barcode: string}}) => {
 
   const getProduct = await findByBarcode(params.barcode)
   if (!getProduct) {
@@ -19,4 +19,4 @@ const editProductByBarcode = async ({params}: {params:{barcode: string}}) => {
   )
 }
 
-export default editProductByBarcode
+export default updateProductByBarcode
