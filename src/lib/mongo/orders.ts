@@ -83,9 +83,7 @@ export async function getOrdersByStatus(status?: OrderStatus ) {
             result = await orders.find({}).toArray();
         } else {
             result = await orders.find<Order>({ status }).toArray();
-        }
-        console.log("hola no resulto nada");
-        
+        }        
         return JSON.stringify(result);
     } catch (error: any) {
         throw new Error(error);

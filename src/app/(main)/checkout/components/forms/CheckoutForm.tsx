@@ -5,7 +5,7 @@ import { Dispatch, InputHTMLAttributes, SetStateAction, useEffect, useRef, useSt
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import checkoutSchema, { Checkout } from "./checkoutResolver"
 import useCart from '@/app/(main)/components/useCart'
-import { formatPrice } from '@/globalFunctions'
+import { formatPrice, getLocalDateTime } from '@/globalFunctions'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { Order, OrderProduct } from '@/model/order'
 import { CartProduct, resetCart } from '@/lib/redux/reducers/cart'
@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import ConfirmedOrder from '../ConfirmedOrder'
 import { setSessionId, uploadOrder } from '@/lib/mongo/orders'
 import { addOrder } from '@/lib/redux/reducers/clientOrders'
+import { deliveryFee } from '@/globalConsts'
 
 const CheckoutForm = () => {
     const dispatch = useAppDispatch()
@@ -27,26 +28,27 @@ const CheckoutForm = () => {
     const items = useAppSelector(state => state.cart.value)
     const { subtotal, itemsCount } = useCart()
     const formContainer = useRef<HTMLDivElement>(null)
-    const deliveryFee = 1000
 
     const validateAndUpload = async (data: FormData) => {
         if (!formState.isValid) return;
 
         const form = Object.fromEntries(data.entries()) as unknown as Checkout
-        const orderProducts: OrderProduct[] = convertCartToOrder(items)
+        const {name, phone, building, apto, unit} = form
+        const products: OrderProduct[] = convertCartToOrder(items)
+        const createdAt = getLocalDateTime().toBSON()
 
         const order: Order = {
-            products: orderProducts,
-            customerName: form.name,
-            customerPhone: form.phone,
+            products,
+            customerName: name,
+            customerPhone: phone,
             deliveryAddress: {
-                building: form.building,
-                apartment: form.apto,
-                unit: "Villa verde"
+                building: building,
+                apartment: apto,
+                unit: unit
             },
             totalPrice: subtotal + deliveryFee,
-            status: "pending",
-            createdAt: new Date().toISOString(),
+            status: 'pending',
+            createdAt,
         }
         const upload = await uploadOrder(order)
 
@@ -55,7 +57,7 @@ const CheckoutForm = () => {
         const res = JSON.parse(upload)
         setOrderConfirmed(order);
         dispatch(resetCart());
-        dispatch(addOrder({ _id: res.insertedId, ...order }))
+        dispatch(addOrder({ ...order,  _id: res.insertedId}))
 
     }
 

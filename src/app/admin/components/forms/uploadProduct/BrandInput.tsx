@@ -1,5 +1,5 @@
+import { brands } from "@/globalConsts";
 import Input from "./Input";
-import {brands} from "../../productConsts";
 
 const BrandInput = ({ showAt }: { showAt: number }) => {
 

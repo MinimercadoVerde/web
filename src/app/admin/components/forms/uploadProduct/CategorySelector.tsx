@@ -5,7 +5,7 @@ import React, { useContext, useState } from 'react'
 import { StageContext } from './UploadProductForm';
 import { useFormContext } from 'react-hook-form';
 import { UploadProduct } from '../productResolver';
-import { categories } from '../../productConsts';
+import { categories } from '@/globalConsts';
 
 const CategorySelector = ({ showAt }: { showAt: number }) => {
   const [categorySelected, setCategorySelected] = useState<Category>();

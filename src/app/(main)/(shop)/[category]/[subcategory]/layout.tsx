@@ -1,4 +1,4 @@
-import { categories } from '@/app/admin/components/productConsts';
+import { categories } from '@/globalConsts';
 import { camelCaseToTitleCase, formatName } from '@/globalFunctions';
 import { Category, SubCategory } from '@/model/product'
 import Link from 'next/link';

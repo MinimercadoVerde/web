@@ -2,7 +2,7 @@
 import { camelCaseToTitleCase } from '@/globalFunctions';
 import { useFormContext } from 'react-hook-form';
 import { UploadProduct } from '../productResolver';
-import { categories } from '../../productConsts';
+import { categories } from '@/globalConsts';
 
 const CategorySelector = () => {
     const { register, getValues } = useFormContext<UploadProduct>()

@@ -4,9 +4,9 @@ import React from 'react'
 import Link from 'next/link';
 import { IoIosArrowBack } from 'react-icons/io';
 import { camelCaseToTitleCase } from '@/globalFunctions';
-import { categories } from '@/app/admin/components/productConsts';
 import CategorySelector from './CategorySelector';
 import ProductCard from '../components/ProductCard';
+import { categories } from '@/globalConsts';
 
 export function generateStaticParams(): Category[] {
     return ['canastaFamiliar', 'higienePersonal', 'mecato', 'licor', 'aseo', 'bebidas', 'mascotas'] as Category[];

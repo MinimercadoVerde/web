@@ -1,4 +1,6 @@
-export function formatName (name: string){
+import { DateTime } from "luxon";
+
+export function formatName(name: string) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
@@ -18,6 +20,10 @@ export function formatPrice(value: number) {
 }
 export function removeAccents(string: string) {
   return string
-      .normalize('NFD') 
-      .replace(/[\u0300-\u036f]/g, ''); 
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+export function getLocalDateTime() {
+  return DateTime.now().setZone("America/Bogota") as DateTime<true>
 }
