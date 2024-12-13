@@ -75,7 +75,7 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     }
 }
 
-export async function getOrdersByStatus(status?: OrderStatus ) {
+export async function getOrdersByStatus(status?: OrderStatus) {
     try {
         await init()
         let result;
@@ -83,14 +83,14 @@ export async function getOrdersByStatus(status?: OrderStatus ) {
             result = await orders.find({}).toArray();
         } else {
             result = await orders.find<Order>({ status }).toArray();
-        }        
+        }
         return JSON.stringify(result);
     } catch (error: any) {
         throw new Error(error);
     }
 }
 
-export async function updateOrdersProducts(productBarcode: string, query: StockStatus){
+export async function updateOrdersProducts(productBarcode: string, query: StockStatus) {
     try {
         await init()
         const result = await orders.updateMany({ "products.barcode": productBarcode }, { $set: { "products.$.stockStatus": query } })
@@ -102,6 +102,15 @@ export async function updateOrdersProducts(productBarcode: string, query: StockS
 }
 
 
-export async function updateOrder (order: Partial<Order>, orderId: Pick<Order, '_id'>){
-    orderId._id
+export async function updateOrder( orderId: string , order: Partial<Order> ) {
+
+    try {
+        await init()
+        const result = await orders.updateOne({ _id: new ObjectId(orderId) }, { $set: order })
+        console.log(result)
+        if (result.matchedCount <= 0) return { error: 'order not found', success: false }
+        return {...result, success: true}
+    } catch (error: any) {
+        return { error: error.message, success: false }
+    }
 }

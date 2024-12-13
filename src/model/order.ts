@@ -14,17 +14,7 @@ const orderProductSchema = z.object({
     category: z.string(),
 })
 
-export interface OrderProduct {
-    barcode: string;
-    image: string;
-    quantity: number;
-    totalPrice: number;
-    unitPrice: number;
-    name: string;
-    measure: string;
-    category: string;
-    stockStatus?: StockStatus;
-}
+export type OrderProduct = z.infer<typeof orderProductSchema>
 
 export type OrderStatus = 'pending' | 'packed' | 'delivered';
 export const unit = z.enum(units)
@@ -45,4 +35,4 @@ export const orderSchema = z.object({
     status: z.enum(['pending', 'packed', 'delivered']),
 })
 export type Unit = z.infer<typeof unit>
-export type Order =  z.infer<typeof orderSchema> & {_id?: ObjectId}
+export type Order =  z.infer<typeof orderSchema> & {_id?: ObjectId | string}
