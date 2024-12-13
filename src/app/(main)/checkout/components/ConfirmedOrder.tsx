@@ -18,7 +18,7 @@ const ConfirmedOrder = ({ order }: { order: Order | null }) => {
 
                     <div className='px-3 *:my-5'>
                         <h2 className='text-center my-1'>Resumen del pedido</h2>
-                        <h3 className='text-center'>Total: <b>{formatPrice(order.totalPrice)}</b></h3>
+                        <h3 className='text-center'>Total: <b>{formatPrice(order.subtotal + order.deliveryFee)}</b></h3>
                         <div className='flex items-center justify-between'>
 
                             <div className='flex flex-col gap-3'>

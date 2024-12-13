@@ -46,9 +46,11 @@ const CheckoutForm = () => {
                 apartment: apto,
                 unit: unit
             },
-            totalPrice: subtotal + deliveryFee,
+            subtotal,
+            deliveryFee,
             status: 'pending',
             createdAt,
+
         }
         const upload = await uploadOrder(order)
 
@@ -101,7 +103,7 @@ const CheckoutForm = () => {
                                         <div className="snap-center grid place-items-center gap-5 my-5 ">
                                             <div className='text-sm flex gap-3'>
                                                 <span>Subtotal: <b>{formatPrice(subtotal)}</b></span>
-                                                <b>+</b>
+                                                            <b>+</b>
                                                 <span>Domicilio: <b>{formatPrice(deliveryFee)}</b></span>
                                             </div>
                                             <div className='text-center text-xl'>

@@ -1,12 +1,11 @@
 'use server'
-import { Collection, Db, MongoClient, ObjectId, OptionalId } from "mongodb";
+import { Collection, Db, MongoClient, OptionalId } from "mongodb";
 import clientPromise from "."
 import { BaseProduct, Category, Product, StockStatus, SubCategory } from "@/model/product";
 import { formatName } from "@/globalFunctions";
 import { revalidatePath } from "next/cache";
 import { UploadProduct } from "@/app/admin/components/forms/productResolver";
 import axios from "axios";
-import { z } from "zod"
 
 let client: MongoClient;
 let db: Db;
@@ -160,32 +159,18 @@ export async function getProductsByStockStatus(status: StockStatus) {
     }
 }
 
-const editableSchema = z.object({
-    stockStatus: z.enum(['low', 'available', 'out']),
-    price: z.number().multipleOf(50),
-    costPrice: z.number(),
-})
 
-export async function updateProductValues(barcode: string, body: Object ) {
-
-    const keys = Object.keys(body)
-    if (!(keys.length > 0)) return { error: 'Body cannot be empty' , success: false}
-
-    const bodyValues = editableSchema.partial().safeParse(body)
-    if (!bodyValues.success) return {...bodyValues.error.formErrors.fieldErrors, success: false}
-
+export async function updateProductValues(barcode: string, body: Partial<Product>) {
     try {
-
         await init()
         const result = await products.updateOne({ barcode }, { $set: body })
-        if (result.matchedCount <= 0) return {error: 'Product not found'}
-
-        return {...result, success: result.matchedCount > 0}
+        if (result.matchedCount <= 0) return { error: 'product not found', success: false }
+        revalidatePath('/', 'layout')
+        return { ...result, success: true }
     } catch (error: any) {
-        throw new Error(error)
+        throw new Error(error.message)
     }
 }
-
 
 export async function updateProduct(product: UploadProduct) {
     const { barcode, name, price, description, brand, category, costPrice, image, measure, subcategory } = product

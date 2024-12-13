@@ -64,10 +64,11 @@ const OrderListItem = ({
 }) => {
   const {
     deliveryAddress: { apartment, building },
-    totalPrice,
-    _id,
+    subtotal,
+    deliveryFee,
+    _id
   } = order;
-
+  const totalPrice = deliveryFee + subtotal
   return (
     <Link
       href={`/order/${_id}`}

@@ -1,5 +1,6 @@
 import { Brand, Category, SubCategory } from "@/model/product"
 import * as yup from "yup"
+import { z } from "zod";
 
 export type UploadProduct = {
     barcode: string;

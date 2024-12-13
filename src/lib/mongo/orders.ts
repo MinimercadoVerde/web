@@ -100,3 +100,8 @@ export async function updateOrdersProducts(productBarcode: string, query: StockS
         throw new Error(error)
     }
 }
+
+
+export async function updateOrder (order: Partial<Order>, orderId: Pick<Order, '_id'>){
+    orderId._id
+}

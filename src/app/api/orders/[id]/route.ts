@@ -1,9 +1,8 @@
 import { getOrderById, updateOrderStatus } from "@/lib/mongo/orders"
-import { Order, OrderStatus } from "@/model/order"
+import { Order, orderSchema, OrderStatus } from "@/model/order"
 import { UpdateResult } from "mongodb"
 import { revalidatePath } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
-
 
 const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
 
@@ -46,4 +45,26 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
+}
+
+
+const editableOrder = orderSchema.pick({ products: true, status: true, subtotal: true }).strict()
+
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+
+    try {
+        const body = await request.json();
+        const keys = Object.keys(body);
+        if (!(keys.length > 0)) return NextResponse.json('Body not received', { status: 400, headers })
+
+        const validBody = editableOrder.partial().safeParse(body)
+
+        if (!validBody.success) return NextResponse.json(validBody.error.formErrors, { status: 400, headers })
+
+        return NextResponse.json(body, { status: 200, headers })
+    }
+    catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 400, headers })
+    }
 }

@@ -40,7 +40,8 @@ export const orderSchema = z.object({
         unit,
     }),
     createdAt: z.date(),
-    totalPrice: z.number(),
+    subtotal: z.number(),
+    deliveryFee: z.number(),
     status: z.enum(['pending', 'packed', 'delivered']),
 })
 export type Unit = z.infer<typeof unit>
