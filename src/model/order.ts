@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 const orderProductSchema = z.object({
-    barcode: z.string(),
+    barcode: z.union([z.string(), z.number()]),
     image: z.string(),
     quantity: z.number().min(1),
     totalPrice: z.number().min(0),
@@ -12,7 +12,7 @@ const orderProductSchema = z.object({
     name: z.string(),
     measure: z.string(),
     category: z.string(),
-})
+}).partial()
 
 export type OrderProduct = z.infer<typeof orderProductSchema>
 
