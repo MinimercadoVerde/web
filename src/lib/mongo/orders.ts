@@ -107,7 +107,6 @@ export async function updateOrder( orderId: string , order: Partial<Order> ) {
     try {
         await init()
         const result = await orders.updateOne({ _id: new ObjectId(orderId) }, { $set: order })
-        console.log(result)
         if (result.matchedCount <= 0) return { error: 'order not found', success: false }
         return {...result, success: true}
     } catch (error: any) {

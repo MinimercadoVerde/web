@@ -36,7 +36,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         if (!validBody.success) return NextResponse.json(validBody.error.formErrors, { status: 400, headers })
 
         const res = await updateOrder(id, body)
-        if (!res.success) return NextResponse.json(res.error.formErrors, { status: 400, headers })
+        if (!res.success) return NextResponse.json(res.error, { status: 400, headers })
 
         return NextResponse.json(res, { status: 200, headers })
     }
