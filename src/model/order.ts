@@ -12,7 +12,7 @@ const orderProductSchema = z.object({
     name: z.string(),
     measure: z.string(),
     category: z.string(),
-}).partial()
+})
 
 export type OrderProduct = z.infer<typeof orderProductSchema>
 
