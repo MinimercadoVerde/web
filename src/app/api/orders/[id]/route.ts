@@ -1,5 +1,5 @@
 import { getOrderById, updateOrder } from "@/lib/mongo/orders"
-import {  orderSchema } from "@/model/order"
+import { orderSchema } from "@/model/order"
 import { NextRequest, NextResponse } from "next/server"
 
 const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
@@ -25,9 +25,8 @@ const editableOrder = orderSchema.pick({ products: true, status: true, subtotal:
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    if(!request.bodyUsed) return NextResponse.json('Body not received', {status: 400, headers})
     try {
-        const body = await request.json();
+        const body = await request.json().then(value => !value ? NextResponse.json('Body not received', { status: 400, headers }) : value);
         const keys = Object.keys(await body);
         if (!(keys.length > 0)) return NextResponse.json('Body is empty', { status: 400, headers })
 
@@ -41,6 +40,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         return NextResponse.json(res, { status: 200, headers })
     }
     catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 400, headers })
+        return error.message === "Unexpected end of JSON input" ? NextResponse.json("Body not received as expected", { status: 400, headers })
+            :
+            NextResponse.json({ error: error.message }, { status: 400, headers })
     }
 }
