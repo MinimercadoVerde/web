@@ -25,11 +25,11 @@ const editableOrder = orderSchema.pick({ products: true, status: true, subtotal:
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-
+    if(!request.bodyUsed) return NextResponse.json('Body not received', {status: 400, headers})
     try {
         const body = await request.json();
-        const keys = Object.keys(body);
-        if (!(keys.length > 0)) return NextResponse.json('Body not received', { status: 400, headers })
+        const keys = Object.keys(await body);
+        if (!(keys.length > 0)) return NextResponse.json('Body is empty', { status: 400, headers })
 
         const validBody = editableOrder.partial().safeParse(body)
 

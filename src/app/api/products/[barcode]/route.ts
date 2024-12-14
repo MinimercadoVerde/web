@@ -1,6 +1,8 @@
+import { updateOrdersProducts } from "@/lib/mongo/orders"
 import { findByBarcode, updateProductValues } from "@/lib/mongo/products"
 import { Product, productSchema, } from "@/model/product"
 import { NextRequest, NextResponse } from "next/server"
+import { z } from "zod"
 
 const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
 
@@ -19,17 +21,19 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 
-const editableProduct = productSchema.pick({ stockStatus: true, price: true, costPrice: true }).strict()
+const editableProduct = productSchema.pick({ stockStatus: true, price: true, costPrice: true }).partial().strict()
+type EditableProduct = z.infer<typeof editableProduct>
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ barcode: string }> }) {
     const { barcode } = await params
 
     try {
-        const body = await request.json()
+        const body = await request.json() as EditableProduct
         if (!body) return NextResponse.json({ error: "Body not received" }, { status: 400, headers })
 
-        const validBody = editableProduct.partial().safeParse(body)
+        const validBody = editableProduct.safeParse(body)
         if (!validBody.success) return NextResponse.json(validBody.error.formErrors, { status: 400, headers })
+        if (body.stockStatus !== undefined) {await updateOrdersProducts(barcode, body.stockStatus) }
 
         const res = await updateProductValues(barcode, body)
 

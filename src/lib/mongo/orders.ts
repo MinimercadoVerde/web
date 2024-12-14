@@ -90,10 +90,10 @@ export async function getOrdersByStatus(status?: OrderStatus) {
     }
 }
 
-export async function updateOrdersProducts(productBarcode: string, query: StockStatus) {
+export async function updateOrdersProducts(productBarcode: string, status: StockStatus) {
     try {
         await init()
-        const result = await orders.updateMany({ "products.barcode": productBarcode }, { $set: { "products.$.stockStatus": query } })
+        const result = await orders.updateMany({ "products.barcode": productBarcode }, { $set: { "products.$.stockStatus": status } })
         revalidatePath('/api/orders')
         return JSON.stringify(result)
     } catch (error: any) {

@@ -88,14 +88,14 @@ export async function uploadProduct(product: UploadProduct) {
         searchString,
         barcode,
         name: formatName(name),
-        price,
         brand: formatName(brand),
         description: '', // default '' while uploading initial products
         image: '', // default '' while uploading initial products
         measure,
         category,
         subcategory,
-        costPrice,
+        costPrice: Number(costPrice),
+        price: Number(price),
         stockStatus: 'available'
     }
 

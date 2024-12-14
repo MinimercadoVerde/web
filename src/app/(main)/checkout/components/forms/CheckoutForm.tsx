@@ -198,11 +198,11 @@ function convertCartToOrder(cart: CartProduct[]): OrderProduct[] {
         category,
         stockStatus
     }) => ({
-        barcode,
+        barcode: Number(barcode),
         image,
-        quantity,
-        totalPrice: price * quantity,
-        unitPrice: price,
+        quantity: Number(quantity),
+        totalPrice: Number(price * quantity),
+        unitPrice: Number(price),
         name: `${name} ${measure} - ${brand}`,
         measure,
         category,
