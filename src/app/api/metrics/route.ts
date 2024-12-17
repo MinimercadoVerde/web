@@ -1,21 +1,12 @@
-import { getTodayMetrics, upsertTodaysMetrics } from "@/lib/mongo/metrics";
+import { upsertTodaysMetrics } from "@/lib/mongo/metrics";
 import { unit } from "@/model/order";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-const bodySchema = z.object({ saleValue: z.number().positive(), unit })
-type Body = z.infer<typeof bodySchema>
-
-export async function GET(request: NextRequest){
-    try {
-        const res = await getTodayMetrics()
-        return NextResponse.json(res)
-    } catch (error: any) {
-        return NextResponse.json(error.message, { status: 500 })
-    }
-}
-
 export async function PUT(request: NextRequest) {
+
+    const bodySchema = z.object({ saleValue: z.number().positive(), unit })
+    type Body = z.infer<typeof bodySchema>
 
     try {
         const body = await request.json() as Body
@@ -31,4 +22,3 @@ export async function PUT(request: NextRequest) {
         return NextResponse.json(error.message, { status: 500 })
     }
 }
-

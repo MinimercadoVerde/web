@@ -5,6 +5,7 @@ import { Order, OrderStatus } from "@/model/order";
 import { cookies } from "next/headers";
 import { StockStatus } from "@/model/product";
 import { revalidatePath } from "next/cache";
+import { upsertTodaysMetrics } from "./metrics";
 
 let client: MongoClient;
 let db: Db;
@@ -108,8 +109,9 @@ export async function updateOrder(orderId: string, order: Partial<Order>) {
 
     try {
         await init()
-        const result = await orders.updateOne({ _id: new ObjectId(orderId) }, { $set: order })
-        if (result.matchedCount <= 0) return { error: 'order not found', success: false }
+        const result = await orders.findOneAndUpdate({ _id: new ObjectId(orderId) }, { $set: order })
+        if (!result) return { error: 'order not found', success: false }
+        if (result.status === "delivered") await upsertTodaysMetrics(result.subtotal + result.deliveryFee, result.deliveryAddress.unit)
         return { ...result, success: true }
     } catch (error: any) {
         return { error: error.message, success: false }
