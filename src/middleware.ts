@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
   const currentHour = Number(formatter.format(new Date())) 
   ;
   // const open = currentHour > 7 && currentHour < 21
-  const open = false // this is just while updates initial products
+  const open = true // this is just while updates initial products
 
   const pathname = request.nextUrl.pathname
   const url = request.url
