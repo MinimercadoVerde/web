@@ -3,6 +3,7 @@ import { Collection, Db, MongoClient } from "mongodb";
 import clientPromise from ".";
 import { Unit } from "@/model/order";
 import { getLocalDateTime } from "@/globalFunctions";
+import { revalidatePath } from "next/cache";
 
 let client: MongoClient;
 let db: Db;
@@ -59,6 +60,7 @@ export async function upsertTodaysMetrics(saleValue: number, unit: Unit) {
             },
             { upsert: true, returnDocument: 'after' }
         )
+        revalidatePath("/api/metrics")
         return result
 
     } catch (error: any) {
