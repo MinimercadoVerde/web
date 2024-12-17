@@ -25,5 +25,11 @@ export function removeAccents(string: string) {
 }
 
 export function getLocalDateTime() {
-  return DateTime.now().setZone("America/Bogota") as DateTime<true>
+  const now = DateTime.now().setZone("America/Bogota") as DateTime<true>
+  const today = now.startOf('day').toBSON()
+  const { month, year } = now
+  const week = now.weekNumber
+
+  return {now, today, week, month, year}
 }
+

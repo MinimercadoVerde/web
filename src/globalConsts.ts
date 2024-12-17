@@ -27,9 +27,15 @@ const categories = {
     bebidas: ['gaseosas', 'jugos', 'agua', 'té', 'café', 'leche', 'bebidas energéticas', 'otros'] as const,
     mascotas: ['juguetes', 'alimento', 'accesorios', 'higiene', 'otros'] as const,
     otra: ['no aplica'] as const
-} as const ;
+} as const;
 
 const units = ['bulevar', 'sendero', 'villa'] as const
-const deliveryFee = 1000
+type Unit = typeof units[number]
 
-export {  categories, brands, units, deliveryFee};
+const deliveryFees: Record<Unit, number> = {
+    bulevar: 1500,
+    sendero: 1500,
+    villa: 1500
+}
+
+export { categories, brands, units, deliveryFees };

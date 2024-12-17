@@ -5,7 +5,7 @@ import { Dispatch, InputHTMLAttributes, SetStateAction, useEffect, useRef, useSt
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import checkoutSchema, { Checkout } from "./checkoutResolver"
 import useCart from '@/app/(main)/components/useCart'
-import { formatPrice, getLocalDateTime } from '@/globalFunctions'
+import { camelCaseToTitleCase, formatPrice, getLocalDateTime } from '@/globalFunctions'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { Order, OrderProduct } from '@/model/order'
 import { CartProduct, resetCart } from '@/lib/redux/reducers/cart'
@@ -13,13 +13,15 @@ import { useRouter } from 'next/navigation'
 import ConfirmedOrder from '../ConfirmedOrder'
 import { setSessionId, uploadOrder } from '@/lib/mongo/orders'
 import { addOrder } from '@/lib/redux/reducers/clientOrders'
-import { deliveryFee } from '@/globalConsts'
+import { deliveryFees } from '@/globalConsts'
 
 const CheckoutForm = () => {
     const dispatch = useAppDispatch()
     const [orderConfirmed, setOrderConfirmed] = useState<Order | null>(null)
     const router = useRouter()
     const [stage, setStage] = useState(0)
+    const [deliveryFee, setDeliveryFee] = useState(1500)
+
     const form = useForm({
         resolver: yupResolver(checkoutSchema)
     })
@@ -34,12 +36,13 @@ const CheckoutForm = () => {
 
         const form = Object.fromEntries(data.entries()) as unknown as Checkout
         const {name, phone, building, apto, unit} = form
+        setDeliveryFee(deliveryFees[unit])
         const products: OrderProduct[] = convertCartToOrder(items)
-        const createdAt = getLocalDateTime().toBSON()
+        const createdAt = getLocalDateTime().now.toBSON()
 
         const order: Order = {
             products,
-            customerName: name,
+            customerName: camelCaseToTitleCase(name),
             customerPhone: phone,
             deliveryAddress: {
                 building: building,
@@ -47,11 +50,11 @@ const CheckoutForm = () => {
                 unit: unit
             },
             subtotal,
-            deliveryFee,
+            deliveryFee: deliveryFee,
             status: 'pending',
             createdAt,
-
         }
+
         const upload = await uploadOrder(order)
 
         if (!upload) return;

@@ -93,22 +93,24 @@ export async function getOrdersByStatus(status?: OrderStatus) {
 export async function updateOrdersProducts(productBarcode: string, status: StockStatus) {
     try {
         await init()
-        const result = await orders.updateMany({ "products.barcode": productBarcode }, { $set: { "products.$.stockStatus": status } })
+        const result = await orders.updateMany({ "products.barcode": productBarcode },
+            { $set: { "products.$[product].stockStatus": status } },
+            { arrayFilters: [{ "product.barcode": productBarcode }] })
         revalidatePath('/api/orders')
-        return JSON.stringify(result)
+        return result
     } catch (error: any) {
         throw new Error(error)
     }
 }
 
 
-export async function updateOrder( orderId: string , order: Partial<Order> ) {
+export async function updateOrder(orderId: string, order: Partial<Order>) {
 
     try {
         await init()
         const result = await orders.updateOne({ _id: new ObjectId(orderId) }, { $set: order })
         if (result.matchedCount <= 0) return { error: 'order not found', success: false }
-        return {...result, success: true}
+        return { ...result, success: true }
     } catch (error: any) {
         return { error: error.message, success: false }
     }

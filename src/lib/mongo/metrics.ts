@@ -1,8 +1,8 @@
 import { Metrics } from "@/model/metrics";
 import { Collection, Db, MongoClient } from "mongodb";
 import clientPromise from ".";
-import { DateTime } from 'luxon'
 import { Unit } from "@/model/order";
+import { getLocalDateTime } from "@/globalFunctions";
 
 let client: MongoClient;
 let db: Db;
@@ -23,14 +23,22 @@ export async function init() {
     await init()
 })
 
+export async function getTodayMetrics() {
+    const {today} =  getLocalDateTime()
+
+    try {
+        await init()
+        const result = await metrics.findOne({ date: today })
+        return result 
+        
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
 export async function upsertTodaysMetrics(saleValue: number, unit: Unit) {
+    const {today, week, month, year} =  getLocalDateTime()
 
-    const now = DateTime.now().setZone("America/Bogota") as DateTime<true>
-    if (!now) { throw new Error("Zone not supported") }
-
-    const today = now.startOf('day').toBSON()
-    const { month, year } = now
-    const week = now.weekNumber
     try {
         await init()
         const result = await metrics.findOneAndUpdate(
@@ -44,8 +52,8 @@ export async function upsertTodaysMetrics(saleValue: number, unit: Unit) {
                 },
                 $setOnInsert: {
                     date: today,
-                    month,
                     week,
+                    month,
                     year,
                 }
             },
