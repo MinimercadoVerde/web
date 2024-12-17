@@ -111,7 +111,7 @@ export async function updateOrder(orderId: string, order: Partial<Order>) {
         await init()
         const result = await orders.findOneAndUpdate({ _id: new ObjectId(orderId) }, { $set: order })
         if (!result) return { error: 'order not found', success: false }
-        if (result.status === "delivered") await upsertTodaysMetrics(result.subtotal + result.deliveryFee, result.deliveryAddress.unit)
+        if (result.status !== "delivered" && order.status === "delivered" ) await upsertTodaysMetrics(result.subtotal + result.deliveryFee, result.deliveryAddress.unit)
         return { ...result, success: true }
     } catch (error: any) {
         return { error: error.message, success: false }
