@@ -1,5 +1,5 @@
 "use client";
-import { formatPrice } from "@/globalFunctions";
+import { camelCaseToTitleCase, formatPrice } from "@/globalFunctions";
 import { setAllowedToShopOvertime } from "@/lib/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getInitialOrders } from "@/lib/redux/reducers/clientOrders";
@@ -15,7 +15,7 @@ const OrderInProgress = () => {
 
   useLayoutEffect(() => {
     dispatch(getInitialOrders());
-    setAllowedToShopOvertime()
+    setAllowedToShopOvertime();
   }, [dispatch]);
 
   const dialog = useRef<HTMLDialogElement>(null);
@@ -63,18 +63,28 @@ const OrderListItem = ({
   closeDialog: () => void;
 }) => {
   const {
-    deliveryAddress: { apartment, building },
+    deliveryAddress: { unit, apartment, building },
     subtotal,
     deliveryFee,
-    _id
+    status,
+    _id,
   } = order;
-  const totalPrice = deliveryFee + subtotal
+  const estado = {
+    pending: "en progreso...",
+    packed: "en camino...",
+    delivered: "entregado",
+  };
+  const totalPrice = deliveryFee + subtotal;
   return (
     <Link
       href={`/order/${_id}`}
       className="flex flex-col items-center border border-gray-100 p-2 pb-1 text-lg text-gray-700"
       onClick={closeDialog}
     >
+      <div className="text-xs justify-between w-full flex">
+        <span className="text-sm">{camelCaseToTitleCase(`${unit} verde`)}</span>
+      <span className=" font-light text-blue-400">{estado[status]}</span>
+      </div>
       <div className="flex w-full items-center justify-between gap-10">
         <span className="flex justify-between gap-5 text-nowrap font-light">
           <span>
@@ -86,7 +96,6 @@ const OrderListItem = ({
         </span>
         <span className="text-base">{formatPrice(totalPrice)}</span>
       </div>
-      <span className="text-xs font-light text-blue-400">En progreso...</span>
     </Link>
   );
 };

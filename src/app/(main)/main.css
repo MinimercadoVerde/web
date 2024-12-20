@@ -1,12 +1,5 @@
-@media screen and (min-width: 1024px) {
-  *::-webkit-scrollbar {
-    scrollbar-width: thin;
-  }
-
-  *::-webkit-scrollbar-thumb {
-    background: rgb(var(--sky-500));
-    border-radius: 99px;
-  }
+::-webkit-scrollbar{
+  scrollbar-width: none;
 }
 
 .productDialog {
@@ -34,6 +27,10 @@
   }
 }
 
+#products-slider{
+scrollbar-width: 10;
+scrollbar-color: rdd;
+}
 #cartList {
   position: absolute;
   width: 100%;

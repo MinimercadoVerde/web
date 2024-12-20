@@ -4,16 +4,20 @@ import ProductImage from '@/components/ProductImage'
 import { formatPrice } from '@/globalFunctions'
 import { WhatsappIcon } from '@/assets/icons/whatsappLogo'
 import Link from 'next/link'
-import { IoIosArrowBack } from 'react-icons/io'
 
 const ConfirmedOrder = ({ order }: { order: Order | null }) => {
+    const estado = {
+        pending: "Tu pedido esta siendo preparado...",
+        packed: "Tu pedido está en camino...",
+        delivered: "Tu pedido ha sido entregado",
+      };
     return (
         <>
             {
                 order && <div className='w-full flex flex-col items-center justify-center pb-24'>
                     <div className="text-center font-light my-10 text-xl">
                         <h1>Gracia por tu compra </h1>
-                        <span className='text-blue-500'>Tu pedido será entregado pronto...</span>
+                        <span className='text-blue-500'>{estado[order.status]}</span>
                     </div>
 
                     <div className='px-3 *:my-5'>

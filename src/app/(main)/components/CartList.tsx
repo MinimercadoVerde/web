@@ -9,7 +9,7 @@ import { Dispatch, SetStateAction } from "react";
 import { CgClose } from "react-icons/cg";
 import useCart from "./useCart";
 import { BiArrowBack } from "react-icons/bi";
-import dynamic from "next/dynamic";
+import dynamic from "next/dynamic"; 
 
 const LottieAnimation = dynamic(
   () => import("@/components/LottieAddToCartAnimation"),
@@ -33,7 +33,7 @@ const CartList = ({ openCartList, setOpenCartList }: props) => {
       )}
 
       <div
-        className={`${openCartList ? "openCart" : "closeCart"} z-20 flex max-w-md flex-col place-items-center items-center bg-gray-50`}
+        className={`${openCartList ? "openCart" : "closeCart"} z-20 flex flex-col place-items-center items-center bg-gray-50`}
         id="cartList"
       >
         <div className="flex w-full justify-between border-b px-3 py-1 font-semibold text-gray-600">

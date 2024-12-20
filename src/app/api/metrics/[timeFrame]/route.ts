@@ -1,13 +1,17 @@
-import { getTodayMetrics } from "@/lib/mongo/metrics";
+import { getCurrentMetricsByTimeFrame, TimeFrame, timeFrameSchema } from "@/lib/mongo/metrics";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 
-const timeFrame = z.enum(["day", "week", "month", "year"])
-type TimeFrame = z.infer<typeof timeFrame>
-export async function GET(request: NextRequest, { params }: { params: Promise<{ timeFrame: TimeFrame }> }){
+
+export async function GET(request: NextRequest, { params }: { params: Promise<{ timeFrame: TimeFrame }> }) {
+
+    const { timeFrame } = await params
 
     try {
-        const res = await getTodayMetrics()
+        const validTimeFrame = timeFrameSchema.safeParse(timeFrame)
+        if (!validTimeFrame.success) {
+            return NextResponse.json(validTimeFrame.error.formErrors, { status: 400 })
+        }
+        const res = await getCurrentMetricsByTimeFrame(timeFrame)
         return NextResponse.json(res)
     } catch (error: any) {
         return NextResponse.json(error.message, { status: 500 })

@@ -33,11 +33,11 @@ const AddToCart = ({ product }: { product: Product }) => {
         <>
 
             {quantity &&
-                <div className="absolute start-0 bg-green-500 z-20 w-6 aspect-square rounded-full grid place-items-center">
-                    <b className="text-white font-mono">{quantity}</b>
+                <div className="absolute start-0 bg-green-500 z-20 w-7 aspect-square rounded-full grid place-items-center">
+                    <b className="text-white font-mono text-lg">{quantity}</b>
                 </div>
             }
-            <IoAdd className="opacity-50 active:scale-75 lg:opacity-0 group-hover:opacity-100 transition bg-blue-500 rounded-full absolute z-20 text-3xl end-0 translate-x-2 -translate-y-2 stroke-white cursor-pointer select-none"
+            <IoAdd className="opacity-25 active:scale-75 lg:opacity-0 group-hover:opacity-100 transition bg-blue-500 rounded-full absolute z-20 text-3xl end-0 translate-x-2 -translate-y-2 stroke-white cursor-pointer select-none"
                 title="Añadir al carrito"
                 onClick={() => addToCart()}
             />
