@@ -30,7 +30,7 @@ const ConfirmedOrder = ({ order }: { order: Order | null }) => {
                                 <span>Cliente: <b>{order.customerName}</b></span>
                                 <div className='flex gap-5'>
                                     <span>T: <b>{order.deliveryAddress.building}</b></span>
-                                    <span>Apto: <b>{order.deliveryAddress.building}</b></span>
+                                    <span>Apto: <b>{order.deliveryAddress.apartment}</b></span>
                                 </div>
                                 <span>Teléfono: <b>{order.customerPhone}</b></span>
                             </div>

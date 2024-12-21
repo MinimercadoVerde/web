@@ -116,6 +116,10 @@ const CheckoutForm = () => {
                                         </div>
                                     }
                                 </div>
+                                {
+                                    stage < 4 && 
+                                <button className='bg-white text-lg px-5 py-2 rounded-full shadow-sm' type='button'>Siguiente</button>
+                                }
                                 <button type="submit" style={stage >= 4 ? { opacity: 100 } : { opacity: 0 }} className='bg-blue-500 px-5 py-2 rounded-full text-xl text-white disabled:bg-gray-300 my-3' disabled={!formState.isValid} autoFocus>Hacer pedido</button>
                             </FormProvider>
                         </form>
