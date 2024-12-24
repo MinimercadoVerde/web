@@ -10,7 +10,7 @@ const updateProductByBarcode = async ({params}: {params:{barcode: string}}) => {
     return <div>Product not found.</div>
   }
 
-  const product = JSON.parse(getProduct) as Product
+  const product = getProduct as Product
   
   return (
     <div>

@@ -72,7 +72,7 @@ export async function findByBarcode(barcode: string) {
 
         const result = await products.findOne({ barcode: barcode })
 
-        return result?.barcode && JSON.stringify(result)
+        return result?.barcode && result
 
     } catch (error: any) {
         throw new Error(error)
