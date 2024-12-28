@@ -2,11 +2,7 @@ import { brands, categories } from "@/globalConsts";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
-
-
-
 export type Category = keyof typeof categories;
-
 export type SubCategory<C extends Category> = typeof categories[C][number];
 export type StockStatus = 'low' | 'available' | 'out';
 
@@ -16,12 +12,11 @@ export interface BaseProduct {
     name: string;
     measure: string;
     brand: Brand | string;
-    description?: string;
+    description?: string; 
     image: string;
     category: Category;
     subcategory: SubCategory<Category>;
 }
-
 
 const brandOptions = z.enum(brands)
 export type Brand = z.infer<typeof brandOptions>;
@@ -44,8 +39,6 @@ export const baseProductSchema = z.object({//+
     category,//+
     subcategory: subcategorySchema,//+
 });
-
-
 
 export const productSchema = baseProductSchema.extend({
     searchString: z.string().optional(),

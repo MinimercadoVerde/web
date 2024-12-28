@@ -9,7 +9,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     try {
         const validTimeFrame = timeFrameSchema.safeParse(timeFrame)
         if (!validTimeFrame.success) {
-            return NextResponse.json(validTimeFrame.error.formErrors, { status: 400 })
+            return NextResponse.json(validTimeFrame.error.formErrors, { status: 400 ,  headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json',
+            }})
         }
         const res = await getCurrentMetricsByTimeFrame(timeFrame)
         return NextResponse.json(res)
