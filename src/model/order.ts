@@ -1,4 +1,3 @@
-import { StockStatus } from "./product";
 import { units } from "@/globalConsts";
 import { ObjectId } from "mongodb";
 import { z } from "zod";

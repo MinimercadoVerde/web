@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { StockStatus } from "@/model/product";
 import { revalidatePath } from "next/cache";
 import { upsertTodaysMetrics } from "./metrics";
+import { getLocalDateTime } from "@/globalFunctions";
 
 let client: MongoClient;
 let db: Db;
@@ -79,9 +80,10 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
 export async function getOrdersByStatus(status?: OrderStatus) {
     try {
         await init()
+        const {today} = getLocalDateTime()
         let result;
         if (!status) {
-            result = await orders.find({}).toArray();
+            result = await orders.find({createdAt: today}).toArray();
         } else {
             result = await orders.find<Order>({ status }).toArray();
         }
