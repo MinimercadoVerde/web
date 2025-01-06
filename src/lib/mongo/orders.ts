@@ -83,7 +83,7 @@ export async function getOrdersByStatus(status?: OrderStatus) {
         const {today} = getLocalDateTime()
         let result;
         if (!status) {
-            result = await orders.find({createdAt: today}).toArray();
+            result = await orders.find({createdAt: {$gt: today}}).toArray();
         } else {
             result = await orders.find<Order>({ status }).toArray();
         }
