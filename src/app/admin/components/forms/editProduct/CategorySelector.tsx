@@ -22,17 +22,6 @@ const CategorySelector = () => {
                 </select>
             </label >
 
-            <label >
-                <span className='text-sm font-semibold text-gray-600' >Sub categoría</span>
-                <select {...register("subcategory")} required>
-                    <option value="" ></option>
-                    {categories[getValues("category")].map((subcategory) => (
-                        <option key={subcategory} value={subcategory}>
-                            {camelCaseToTitleCase(subcategory)}
-                        </option>
-                    ))}
-                </select>
-            </label>
 
         </>
     );
