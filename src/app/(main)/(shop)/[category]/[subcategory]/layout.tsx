@@ -1,11 +1,11 @@
 import { categories } from '@/globalConsts';
 import { camelCaseToTitleCase, formatName } from '@/globalFunctions';
-import { Category, SubCategory } from '@/model/product'
+import { Category } from '@/model/product'
 import Link from 'next/link';
 import React, { ReactNode } from 'react'
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
 
-const SubcategoryLayout = async ({ params, children }: { params: { category: Category, subcategory: SubCategory<Category> }, children: ReactNode }) => {
+const SubcategoryLayout = async ({ params, children }: { params: { category: Category, subcategory: string }, children: ReactNode }) => {
     const { category, subcategory } = params;
 
     return (
@@ -20,9 +20,9 @@ const SubcategoryLayout = async ({ params, children }: { params: { category: Cat
     )
 }
 
-const SubcategoriesSelector = ({ category, subcategory }: { category: Category, subcategory: SubCategory<Category> }) => {
+const SubcategoriesSelector = ({ category, subcategory }: { category: Category, subcategory: string }) => {
 
-    const decodedSubcategory = decodeURIComponent(subcategory) as SubCategory<Category>;
+    const decodedSubcategory = decodeURIComponent(subcategory) as string;
 
     return (
         <div className='relative  d'>
