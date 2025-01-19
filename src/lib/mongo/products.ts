@@ -1,7 +1,7 @@
 'use server'
 import { Collection, Db, MongoClient, OptionalId } from "mongodb";
 import clientPromise from "."
-import { BaseProduct, Category, Product, StockStatus, SubCategory } from "@/model/product";
+import { BaseProduct, Category, Product, StockStatus } from "@/model/product";
 import { formatName } from "@/globalFunctions";
 import { revalidatePath } from "next/cache";
 import { UploadProduct } from "@/app/admin/components/forms/productResolver";
@@ -81,7 +81,7 @@ export async function findByBarcode(barcode: string) {
 
 
 export async function uploadProduct(product: UploadProduct) {
-    const { barcode, name, price, brand, category, measure, subcategory, costPrice } = product
+    const { barcode, name, price, brand, category, measure,  costPrice, tags } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload: OptionalId<Product> = {
@@ -93,10 +93,10 @@ export async function uploadProduct(product: UploadProduct) {
         image: '', // default '' while uploading initial products
         measure,
         category,
-        subcategory,
         costPrice: Number(costPrice),
         price: Number(price),
-        stockStatus: 'available'
+        stockStatus: 'available',
+        tags,
     }
 
     const baseProductPayload: BaseProduct = {
@@ -107,7 +107,7 @@ export async function uploadProduct(product: UploadProduct) {
         description: '',
         image: '',
         category,
-        subcategory
+        tags
     }
 
 
@@ -130,6 +130,21 @@ export async function getProductsByCategory(category: Category) {
 
     try {
         await init()
+        const result = await products.find({ category }, { projection: { _id: 0 } }).sort({tags: 1, name: 1}).toArray();
+        return result
+    } catch (error: any) {
+        throw new Error(error)
+
+    }
+}
+export async function getSamplesByCategory(category: Category, sample?: number) {
+
+    try {
+        await init()
+        if (sample) {
+            const result = await products.aggregate([{ $match: { category } }, { $sample: { size: sample } }, { $project: { _id: 0 } }]).toArray();
+            return result as Product[]
+        }
         const result = await products.find({ category }, { projection: { _id: 0 } }).toArray();
         return result
     } catch (error: any) {
@@ -137,11 +152,11 @@ export async function getProductsByCategory(category: Category) {
 
     }
 }
-export async function getProductsBySubcategory(subcategory: SubCategory<Category>) {
+export async function getProductsBySubcategory(category: Category, subcategory: string) {
 
     try {
         await init()
-        const result = await products.find({ subcategory }, { projection: { _id: 0 } }).toArray();
+        const result = await products.find({ category: "canastaFamiliar", tags: { $in: [subcategory] } }, { projection: { _id: 0 } }).sort({ 'tags': 1 }).toArray();
         return result
     } catch (error: any) {
         throw new Error(error)
@@ -152,7 +167,7 @@ export async function getProductsByStockStatus(status: StockStatus) {
 
     try {
         await init()
-        const result = await products.find({ stockStatus: status }, { projection: { _id: 0 } }).toArray();
+        const result = await products.find({ stockStatus: status }, { projection: { _id: 0 } }).limit(10).toArray();
         return result
     } catch (error: any) {
         throw new Error(error)
@@ -173,7 +188,7 @@ export async function updateProductValues(barcode: string, body: Partial<Product
 }
 
 export async function updateProduct(product: UploadProduct) {
-    const { barcode, name, price, description, brand, category, costPrice, image, measure, subcategory } = product
+    const { barcode, name, price, description, brand, category, costPrice, image, measure , tags} = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload = {
@@ -187,7 +202,7 @@ export async function updateProduct(product: UploadProduct) {
         measure,
         costPrice,
         category,
-        subcategory,
+        tags,
         stock: 0
     }
     try {

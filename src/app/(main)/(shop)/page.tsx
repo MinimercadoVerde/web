@@ -6,23 +6,25 @@ import LicorIcon from "@/assets/icons/categories/licor";
 import CategoryCard from "./components/CategoryCard";
 import ProductsSlider from "./components/ProductsSlider";
 
+export const revalidate = 14400;
+
 export default function Home() {
   return (
     <div className="overflow-hidden">
 
-      <div className="w-full flex flex-wrap gap-10 justify-center ">
-        <CategoryCard category="canastaFamiliar" ><CanastaFamiliarIcon /></CategoryCard>
-        <CategoryCard category="bebidas" ><BebidasIcon /></CategoryCard>
+      <div className="w-full flex flex-wrap gap-10 justify-center mb-10 ">
         <CategoryCard category="mecato"> <MecatoIcon /></CategoryCard>
+        <CategoryCard category="bebidas" ><BebidasIcon /></CategoryCard>
+        <CategoryCard category="canastaFamiliar" ><CanastaFamiliarIcon /></CategoryCard>
         <CategoryCard category="licor"> <LicorIcon /></CategoryCard>
         <CategoryCard category="mascotas"> <MascotasIcon /></CategoryCard>
      
       </div>
-      <ProductsSlider title="Productos destacados" category="canastaFamiliar" />
       <ProductsSlider title="Canasta Familiar" category="canastaFamiliar" />
-      <ProductsSlider title="Canasta Familiar" category="mecato" />
+      <ProductsSlider title="Mecato" category="mecato" />
       <ProductsSlider title="Aseo del hogar" category="aseo" />
       <ProductsSlider title="Higiene personal" category="higienePersonal" />
+      <ProductsSlider title="Higiene personal" category="mascotas" />
       <ProductsSlider title="Licores" category="licor" />
     </div>
   );

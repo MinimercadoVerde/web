@@ -1,3 +1,32 @@
+const tags = [
+    "bebidas",
+    "lacteos",
+    "cereales",
+    "bebidas alcoholicas",
+    "frutas",
+    "verduras",
+    "carnes",
+    "legumbres",
+    "panaderia",
+    "snacks",
+    "bebidas sin alcohol",
+    "papas",
+    "cereales y legumbres",
+    "huevos",
+    "pastas",
+    "salud y belleza",
+    "congelados",
+    "despensas",
+    "bebidas de agua",
+    "carnes y derivados",
+    "frutas y verduras",
+    "panes",
+    "chocolates",
+    "galletas",
+    "parva",
+    "papitas"
+];
+
 const brands = [
     "Alpina",
     "Colanta",
@@ -5,7 +34,7 @@ const brands = [
     "Coca Cola",
     "Bavaria",
     "Postobon",
-    "Nestle",
+    "Nestlé",
     "Doria",
     "Quala",
     "Nutresa",
@@ -15,19 +44,23 @@ const brands = [
     "Procter & Gamble",
     "Bimbo",
     "Grupo Familia",
-    "Ramo"
+    "Ramo",
+    "Frito lay",
+    "Quaker",
+    "Mama Inés",
+    "Colombina",
+    "Natipan",
+    "Marinela",
+    "Super",
+    "El Caribe",
+    "Ron Viejo de Caldas",
+    "Las Caseritas",
+    "Casa Luker",
+    "Corona",
+    "Zenú"
 ] as const;
 
-const categories = {
-    canastaFamiliar: ['parva', 'arepas', 'granos', 'lácteos', 'enlatados', 'aceites', 'mantequillas', 'condimentos', 'otros'],
-    higienePersonal: ['crema dental', 'jabón', 'shampoo', 'desodorante', 'talco', 'toallas higiénicas', 'cepillo de dientes', 'papel higiénico'],
-    mecato: ['paquetes', 'helados', 'gomitas', 'chocolates', 'galletas', 'snacks', 'dulces', 'otros'] ,
-    licor: ['cerveza', 'ron', 'aguardiente', 'vino', 'whisky', 'tequila', 'vodka', 'otros'] ,
-    aseo: ['jabón en polvo', 'lavaloza', 'limpiadores', 'esponjas', 'detergente', 'cloro', 'suavizante', 'otros'] ,
-    bebidas: ['gaseosas', 'jugos', 'agua', 'té', 'café', 'leche', 'bebidas energéticas', 'otros'] ,
-    mascotas: ['juguetes', 'alimento', 'accesorios', 'higiene', 'otros'] ,
-    otra: ['no aplica'] 
-} as const;
+const categories = ["canastaFamiliar", "higienePersonal", "mecato", "licor", "aseo", "bebidas", "mascotas", "otra"] as const;
 
 const units = ['bulevar', 'sendero', 'villa'] as const
 type Unit = typeof units[number]
@@ -38,4 +71,4 @@ const deliveryFees: Record<Unit, number> = {
     villa: 1500
 }
 
-export { categories, brands, units, deliveryFees };
+export { brands, units, deliveryFees, categories,tags };

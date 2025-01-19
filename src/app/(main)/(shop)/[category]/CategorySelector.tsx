@@ -8,7 +8,7 @@ const CategorySelector = ({ name }: { name: Category }) => {
     
     return (
         <div className='relative mr-2'>
-            <button className="flex items-center gap-3  group peer text-2xl font-medium focus:text-blue-700">
+            <button className="flex items-center gap-3 text-green-600 group peer text-2xl font-medium focus:text-green-700">
                 <IoIosArrowDown className='group-focus:rotate-180 transition duration-200' />
                 <span className="ml-auto ">
                     {camelCaseToTitleCase(name)}
@@ -19,7 +19,7 @@ const CategorySelector = ({ name }: { name: Category }) => {
 
                 {Object.keys(categories).map((category, key) => (
                     <li key={key} value={category} className=' p-2 odd:bg-slate-50 even:bg-slate-100  '>
-                        <Link href={`/${category}`} className='hover:text-blue-500' replace>{camelCaseToTitleCase(category)}</Link>
+                        <Link href={`/${category}`} className='hover:text-green-500 size-full' replace>{camelCaseToTitleCase(category)}</Link>
                     </li>
                 ))}
             </ul>

@@ -1,7 +1,7 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { createContext, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, Controller } from 'react-hook-form'
 import '../forms-styles.css'
 import Input from './Input'
 import BarcodeInputs from './BarcodeInputs'
@@ -11,6 +11,7 @@ import { uploadProduct } from '@/lib/mongo/products'
 import productSchema, { UploadProduct } from '../productResolver';
 import BrandInput from './BrandInput'
 import CostPriceInput from './CostPriceInput'
+import TagsInput from './TagsInput'
 
 interface StageContextProps {
   stage: number;
@@ -62,6 +63,7 @@ const UploadProductForm = () => {
                 <CostPriceInput showAt={4}/>
                 <PriceInput showAt={5} />
                 <CategorySelector showAt={6} />
+                <Controller control={control} name="tags" render={({field})=> <TagsInput {...field}/>}/>
               </StageContext.Provider>
             </FormProvider>
             {formState.isValid && <button type='submit' className='submit-button'> Crear producto </button>}
