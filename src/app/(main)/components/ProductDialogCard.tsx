@@ -87,7 +87,7 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
         <div className="relative flex size-full flex-col overflow-hidden rounded-lg px-2 shadow-lg">
           <div className="-z-10">
             { quantity && quantity > 0 &&
-            <div className="fixed rounded-b-md bg-green-600 px-3 text-center text-white">
+            <div className="fixed rounded-b-md bg-green-600 px-3 text-center text-white z-10">
               {`añadido${quantity > 1 ? `s: ${quantity}`: ""}`}
             </div>
             }

@@ -1,12 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import {
-  forwardRef,
-  KeyboardEvent,
-  RefObject,
-  useContext,
-  useRef,
-} from "react";
-import { StageContext } from "./UploadProductForm";
+import { forwardRef, KeyboardEvent, RefObject, useRef } from "react";
 import Input from "./Input";
 import { findByBarcode } from "@/lib/mongo/products";
 import Link from "next/link";
@@ -14,9 +7,8 @@ import { UploadProduct } from "../productResolver";
 
 const BarcodeInputs = () => {
   const dialog = useRef<HTMLDialogElement>(null);
-  const { trigger, getFieldState, getValues, setError } =
+  const { trigger, getValues, setError } =
     useFormContext<UploadProduct>();
-  const { stage, setStage } = useContext(StageContext);
 
   const confirmBarcode = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Tab" || e.key === "Enter") {
@@ -31,7 +23,6 @@ const BarcodeInputs = () => {
         });
         return;
       }
-      setStage(1);
     }
   };
 
@@ -41,8 +32,6 @@ const BarcodeInputs = () => {
         name="barcode"
         label="Código de barras"
         type="number"
-        disabled={stage > 0}
-        showAt={0}
         autoFocus
         onKeyDownCapture={confirmBarcode}
       />

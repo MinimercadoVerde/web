@@ -1,21 +1,34 @@
 import { formatPrice } from "@/globalFunctions";
-import { getWithoutImageProducts } from "@/lib/mongo/products";
+import { getProductsByStockStatus } from "@/lib/mongo/products";
 import { Product } from "@/model/product";
 import Link from "next/link";
 import { MdOutlineArrowOutward } from "react-icons/md";
-
+import ProductByStatus from "./components/ProductByStatus";
+import SearchBar from "./components/SearchBar";
+import "./styles.css";
 const AdminPage = async () => {
-  const result = await getWithoutImageProducts();
-  const products: Product[] = JSON.parse(result);
+  const outProducts = await getProductsByStockStatus("available") || [];
+  const lowProducts = await getProductsByStockStatus("low") || [];
 
   return (
     <div className="p-5">
-      <h1 className="my-10 text-xl font-semibold">Productos sin imagenes</h1>
-      <ul className="flex flex-wrap gap-3">
-        {products.map((product) => (
-          <NoImageProduct key={product.barcode} product={product} />
-        ))}
-      </ul>
+      <SearchBar />
+      <section>
+        <h1 className="my-10 text-xl font-semibold">Agotados</h1>
+        <ul className="flex flex-wrap gap-3">
+          {outProducts.map((product) => (
+            <ProductByStatus key={product.barcode} product={product} />
+          ))}
+        </ul>
+      </section>
+      <section>
+        <h1 className="my-10 text-xl font-semibold">Escasos</h1>
+        <ul className="flex flex-wrap gap-3">
+          {lowProducts.map((product) => (
+            <ProductByStatus key={product.barcode} product={product} />
+          ))}
+        </ul>
+      </section>
     </div>
   );
 };
@@ -23,6 +36,7 @@ const AdminPage = async () => {
 const NoImageProduct = ({ product }: { product: Product }) => {
   const { barcode, price, name, brand, measure } = product;
   const fullName = `${name} - ${brand} - ${measure}`;
+
   return (
     <li className="max-w-sm bg-gray-100 p-2">
       <span className="line-clamp-2 h-14 text-lg">{fullName}</span>

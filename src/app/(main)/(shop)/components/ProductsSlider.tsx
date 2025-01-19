@@ -1,24 +1,42 @@
-import { Category } from "@/model/product"
-import ProductCard from "./ProductCard"
-import { getProductsByCategory } from "@/lib/mongo/products"
+import { Category } from "@/model/product";
+import ProductCard from "./ProductCard";
+import { getSamplesByCategory } from "@/lib/mongo/products";
+import Link from "next/link";
+import { IoIosArrowForward } from "react-icons/io";
 
-const ProductsSlider = async ({ title, category }: { title: string, category: Category }) => {
-  const products  = await getProductsByCategory(category)
-   
+const ProductsSlider = async ({
+  title,
+  category,
+}: {
+  title: string;
+  category: Category;
+}) => {
+  const products = await getSamplesByCategory(category, 15);
+
   return (
-    <section >
-      <h2 className="p-5 pb-0 text-gray-400 font-semibold">{title}</h2>
-      <div className="px-5 w-full overflow-x-auto overflow-y-hidden" >
-        <div className="grid grid-flow-col gap-6 place-items-center py-5 pr-1 w-fit">
-          {
-            products.filter((product) => product.category === category).map((product) => (
+    <section className="my-10" >
+      <div className=" flex items-center justify-between px-5 ">
+        <h2 className="pb-0 font-semibold text-gray-500">{title}</h2>
+        <Link href={`/${category}`} className="flex flex-row items-center text-green-600">Ver más <IoIosArrowForward /> </Link>
+      </div>
+      <div className="w-full overflow-x-auto overflow-y-hidden px-5">
+        <div className="grid w-fit grid-flow-col place-items-center gap-6 py-5 pr-1">
+          {products
+            .filter((product) => product.category === category)
+            .map((product) => (
               <ProductCard product={product} key={product.barcode} />
-            ))
-          }
+            ))}
+
+          <Link
+            href={`/${category}`}
+            className="flex h-full w-32 items-center justify-center text-xl text-gray-500"
+          >
+            <span className="text-center">Ver más</span>
+          </Link>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ProductsSlider
+export default ProductsSlider;

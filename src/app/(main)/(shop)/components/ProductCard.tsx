@@ -8,7 +8,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   const labelPrice = formatPrice(price);
   return (
-    <div className="group relative w-36 overflow-visible rounded-md bg-white shadow-md size-full">
+    <div className="group relative w-[9.2rem] overflow-visible rounded-md bg-white shadow-md size-full">
       {stockStatus !== "out" && <AddToCart product={product} />}
       <div className="p-2">
         <div className="w-full">

@@ -10,7 +10,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const TagsInput = ({ value, name, onChange, onBlur, disabled }: Props) => {
+const TagsInput = ({ value = [], onChange}: Props) => {
   const handleClickEnter: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key != "Enter") return;
     const newTag = e.currentTarget.value.trim().toLowerCase();

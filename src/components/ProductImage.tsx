@@ -3,7 +3,7 @@ import { CldImage } from "next-cloudinary";
 
 const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
   return (
-    <figure className="relative aspect-square w-full overflow-clip rounded-md">
+    <figure className="relative aspect-square w-full overflow-clip bg-white">
       <CldImage
         src={src}
         fill

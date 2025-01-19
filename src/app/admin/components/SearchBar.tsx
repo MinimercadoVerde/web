@@ -2,10 +2,10 @@
 import { querySearch } from "@/lib/mongo/products"
 import { Product } from "@/model/product"
 import { useEffect, useRef, useState } from "react"
-import ProductImage from "@/components/ProductImage"
 import { useDebounceValue } from "usehooks-ts"
-import { formatPrice } from "@/globalFunctions"
 import { IoIosClose, IoIosSearch } from "react-icons/io"
+import ProductImage from "@/components/ProductImage"
+import { formatPrice } from "@/globalFunctions"
 import ProductDialogCard from "./ProductDialogCard"
 
 const SearchBar = () => {
@@ -81,7 +81,6 @@ const ProductListItem = ({ product }: { product: Product }) => {
     const { name, brand, measure, price, image, stockStatus } = product;
     return (
         <li className="relative max-w-full w-full odd:bg-gray-100 even:bg-gray-50">
-            {stockStatus !== 'out' && <ProductDialogCard product={product} />}
             <ProductDialogCard product={product} />
             <div className="flex size-full items-center">
                 <div className="min-w-16 md:min-w-20">
