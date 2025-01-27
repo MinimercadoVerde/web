@@ -1,18 +1,18 @@
 import { categories } from '@/globalConsts';
-import { camelCaseToTitleCase, formatName } from '@/globalFunctions';
+import { camelCaseToTitleCase, formatName, kebabToLowerCase, toKebabCase } from '@/globalFunctions';
 import { Category } from '@/model/product'
 import Link from 'next/link';
 import React, { ReactNode } from 'react'
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
 
-const SubcategoryLayout = async ({ params, children }: { params: { category: Category, subcategory: string }, children: ReactNode }) => {
+const SubcategoryLayout = async ({ params, children }: { params: { category: string, subcategory: string }, children: ReactNode }) => {
     const { category, subcategory } = params;
-
+    const decodedCategory = kebabToLowerCase(decodeURIComponent(category)) as Category
     return (
         <section className='size-full'>
             <div className='relative  flex justify-between px-3 w-full'>
-                <Link href={`/${category}`} className=' text-lg text-blue-500 flex items-center gap-1 '><IoIosArrowBack /> {camelCaseToTitleCase(category)}</Link>
-                <SubcategoriesSelector category={category} subcategory={subcategory} />
+                <Link href={`/${category}`} className=' text-lg text-blue-500 flex items-center gap-1 '><IoIosArrowBack /> {camelCaseToTitleCase(decodedCategory)}</Link>
+                <SubcategoriesSelector category={decodedCategory} subcategory={subcategory} />
             </div>
             {children}
         </section>

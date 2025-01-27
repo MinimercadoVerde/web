@@ -2,12 +2,13 @@ import { getProductsBySubcategory } from '@/lib/mongo/products'
 import { Category } from '@/model/product'
 import React from 'react'
 import ProductCard from '../../components/ProductCard';
+import { kebabToLowerCase } from '@/globalFunctions';
 
-const page = async ({ params }: { params: {category: Category,  subcategory: string } }) => {
+const page = async ({ params }: { params: {category: string, subcategory: string } }) => {
     const {category, subcategory } = params;
     const decodedSubcategory = decodeURIComponent(subcategory) as string;
     const decodedCategory = decodeURIComponent(category) as Category;
-    const products = await getProductsBySubcategory(decodedCategory, decodedSubcategory);
+    const products = await getProductsBySubcategory( kebabToLowerCase(decodedCategory)as Category, kebabToLowerCase(decodedSubcategory));
 
     return (
 

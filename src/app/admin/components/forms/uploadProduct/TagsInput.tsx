@@ -1,4 +1,5 @@
-import { tags } from "@/globalConsts";
+import { subcategories, tags } from "@/globalConsts";
+import { Category } from "@/model/product";
 import { KeyboardEventHandler } from "react";
 import { MdCancel } from "react-icons/md";
 
@@ -7,16 +8,19 @@ interface Props {
   name: string;
   onChange: (value: string[]) => void;
   onBlur?: () => void;
+  category: Category;
   disabled?: boolean;
 }
 
-const TagsInput = ({ value = [], onChange}: Props) => {
+const TagsInput = ({ value = [], category = "otra", onChange }: Props) => {
   const handleClickEnter: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key != "Enter") return;
+    e.preventDefault();
     const newTag = e.currentTarget.value.trim().toLowerCase();
-    onChange([...value, newTag]);
+    onChange([...value, newTag.trim().toLowerCase()]);
     e.currentTarget.value = "";
   };
+
   const handleRemove = (index: number) => {
     const newTags = [...value];
     newTags.splice(newTags.indexOf(value[index]), 1);
@@ -26,7 +30,7 @@ const TagsInput = ({ value = [], onChange}: Props) => {
   return (
     <div>
       <label className="flex justify-between">
-        <span  className='text-sm font-semibold text-gray-600'>Etiquetas</span>
+        <span className="text-sm font-semibold text-gray-600">Etiquetas</span>
         <input
           type="text"
           className="decoration-transparent outline-none w-24"
@@ -40,7 +44,12 @@ const TagsInput = ({ value = [], onChange}: Props) => {
           <Tag title={tag} key={index} index={index} remove={handleRemove} />
         ))}
         <datalist id="tags">
-          {tags.map((tag) => (
+          {tags.map((tag, index) => (
+            <option key={index} value={tag}>
+              {tag}
+            </option>
+          ))}
+          {subcategories[category]?.map((tag) => (
             <option key={tag} value={tag}>
               {tag}
             </option>

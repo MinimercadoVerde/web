@@ -15,15 +15,15 @@ export default function Home() {
       <div className="w-full flex flex-wrap gap-10 justify-center mb-10 ">
         <CategoryCard category="mecato"> <MecatoIcon /></CategoryCard>
         <CategoryCard category="bebidas" ><BebidasIcon /></CategoryCard>
-        <CategoryCard category="canastaFamiliar" ><CanastaFamiliarIcon /></CategoryCard>
+        <CategoryCard category="canasta familiar" ><CanastaFamiliarIcon /></CategoryCard>
         <CategoryCard category="licor"> <LicorIcon /></CategoryCard>
         <CategoryCard category="mascotas"> <MascotasIcon /></CategoryCard>
      
       </div>
-      <ProductsSlider title="Canasta Familiar" category="canastaFamiliar" />
+      <ProductsSlider title="Canasta Familiar" category="canasta familiar" />
       <ProductsSlider title="Mecato" category="mecato" />
       <ProductsSlider title="Aseo del hogar" category="aseo" />
-      <ProductsSlider title="Higiene personal" category="higienePersonal" />
+      <ProductsSlider title="Higiene personal" category="higiene personal" />
       <ProductsSlider title="Higiene personal" category="mascotas" />
       <ProductsSlider title="Licores" category="licor" />
     </div>

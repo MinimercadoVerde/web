@@ -1,12 +1,11 @@
 import { getProductsByCategory } from "@/lib/mongo/products";
 import { Category } from "@/model/product";
-import React from "react";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
-import { camelCaseToTitleCase } from "@/globalFunctions";
+import { camelCaseToTitleCase, kebabToLowerCase } from "@/globalFunctions";
 import CategorySelector from "./CategorySelector";
 import ProductCard from "../components/ProductCard";
-import { categories } from "@/globalConsts";
+import { categories, subcategories } from "@/globalConsts";
 
 export function generateStaticParams(): Category[] {
   return [
@@ -20,13 +19,14 @@ export function generateStaticParams(): Category[] {
   ] as Category[];
 }
 
-const CategoryPage = async ({ params }: { params: { category: Category } }) => {
-  const { category } = params;
-  const products = await getProductsByCategory(category);
+const CategoryPage = async ({ params }: { params: Promise<{ category: Category }> }) => {
+  const { category } = await params;
+  const decodedCategory = decodeURIComponent(kebabToLowerCase(category)) as Category
+  const products = await getProductsByCategory(decodedCategory);
 
   return (
     <div className="w-full">
-      <div className=" bg-stone-50  mb-5">
+      <div className="sticky top-20 z-30 bg-stone-50 shadow-md mb-5">
         <div className="flex w-full justify-between ">
           <Link
             href="/"
@@ -34,11 +34,11 @@ const CategoryPage = async ({ params }: { params: { category: Category } }) => {
           >
             <IoIosArrowBack /> Inicio
           </Link>
-          <CategorySelector name={category} />
+          <CategorySelector name={decodedCategory} />
         </div>
         <div>
           <ul className="py-3 flex flex-wrap justify-center gap-7">
-            {categories.map((value, key) => (
+            {subcategories[decodedCategory]?.map((value, key) => (
               <li key={key}>
                 <Link
                   href={`/${category}/${value}`}
@@ -51,7 +51,7 @@ const CategoryPage = async ({ params }: { params: { category: Category } }) => {
           </ul>
         </div>
       </div>
-      <section className="grid w-full grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] place-items-center gap-5 p-2 mb-20">
+      <section className="grid w-full grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] place-items-center gap-5 p-2">
         {products.map((product, key) => (
           <ProductCard product={product} key={key} />
         ))}

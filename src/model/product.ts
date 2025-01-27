@@ -13,6 +13,7 @@ export interface BaseProduct {
     description?: string; 
     image: string;
     category: Category;
+    subcategory: string;
     tags: string[]
 }
 
@@ -28,6 +29,7 @@ export const baseProductSchema = z.object({//+
     description: z.string().optional(),//+
     image: z.string(),//+
     category: z.enum(categories),//+
+    subcategory: z.string(),
     tags: z.array(z.string())
 });
 

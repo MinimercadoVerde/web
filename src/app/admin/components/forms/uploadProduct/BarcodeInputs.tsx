@@ -1,11 +1,12 @@
 import { useFormContext } from "react-hook-form";
-import { forwardRef, KeyboardEvent, RefObject, useRef } from "react";
+import { forwardRef, KeyboardEvent, RefObject, useRef, useState } from "react";
 import Input from "./Input";
 import { findByBarcode } from "@/lib/mongo/products";
 import Link from "next/link";
 import { UploadProduct } from "../productResolver";
 
 const BarcodeInputs = () => {
+  const [disabled, setDisabled] = useState(false)
   const dialog = useRef<HTMLDialogElement>(null);
   const { trigger, getValues, setError } =
     useFormContext<UploadProduct>();
@@ -23,6 +24,7 @@ const BarcodeInputs = () => {
         });
         return;
       }
+      setDisabled(true);
     }
   };
 
@@ -34,6 +36,7 @@ const BarcodeInputs = () => {
         type="number"
         autoFocus
         onKeyDownCapture={confirmBarcode}
+        disabled={disabled}
       />
       <AlreadyCreatedDialog ref={dialog} barcode={getValues("barcode")} />
     </>

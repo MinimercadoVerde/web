@@ -21,7 +21,7 @@ const UploadProductForm = () => {
     resolver: yupResolver(productSchema),
   });
 
-  const { control, formState, getValues, reset, setFocus } = form;
+  const {  formState, getValues, reset, setFocus } = form;
 
   const handleUploadProduct = async () => {
     setFormStatus("submitting");
@@ -59,11 +59,7 @@ const UploadProductForm = () => {
               <CostPriceInput />
               <PriceInput />
               <CategorySelector />
-              <Controller
-                control={control}
-                name="tags"
-                render={({ field }) => <TagsInput {...field} />}
-              />
+             
             </FormProvider>
             {formState.isValid && (
               <button type="submit" className="submit-button">
