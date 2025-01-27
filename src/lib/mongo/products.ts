@@ -81,7 +81,7 @@ export async function findByBarcode(barcode: string) {
 
 
 export async function uploadProduct(product: UploadProduct) {
-    const { barcode, name, price, brand, category, measure,  costPrice, tags } = product
+    const { barcode, name, price, brand, category, measure, costPrice, tags , subcategory} = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload: OptionalId<Product> = {
@@ -93,6 +93,7 @@ export async function uploadProduct(product: UploadProduct) {
         image: '', // default '' while uploading initial products
         measure,
         category,
+        subcategory,
         costPrice: Number(costPrice),
         price: Number(price),
         stockStatus: 'available',
@@ -107,6 +108,7 @@ export async function uploadProduct(product: UploadProduct) {
         description: '',
         image: '',
         category,
+        subcategory,
         tags
     }
 
@@ -130,7 +132,7 @@ export async function getProductsByCategory(category: Category) {
 
     try {
         await init()
-        const result = await products.find({ category }, { projection: { _id: 0 } }).sort({tags: 1, name: 1}).toArray();
+        const result = await products.find({ category }, { projection: { _id: 0 } }).sort({ subcategory: 1,brand:1, measure:1, name: 1 }).toArray();
         return result
     } catch (error: any) {
         throw new Error(error)
@@ -156,7 +158,7 @@ export async function getProductsBySubcategory(category: Category, subcategory: 
 
     try {
         await init()
-        const result = await products.find({ category: "canastaFamiliar", tags: { $in: [subcategory] } }, { projection: { _id: 0 } }).sort({ 'tags': 1 }).toArray();
+        const result = await products.find({$and: [{category}, {subcategory}]}, { projection: { _id: 0 } }).sort({name:1, brand: 1 }).toArray();
         return result
     } catch (error: any) {
         throw new Error(error)
@@ -188,7 +190,7 @@ export async function updateProductValues(barcode: string, body: Partial<Product
 }
 
 export async function updateProduct(product: UploadProduct) {
-    const { barcode, name, price, description, brand, category, costPrice, image, measure , tags} = product
+    const { barcode, name, price, description, brand, category, costPrice, image, measure, tags } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload = {
