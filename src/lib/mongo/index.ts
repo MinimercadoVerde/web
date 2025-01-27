@@ -8,7 +8,7 @@ if (!URI) {
   throw new Error("Please add your Mongo URI to .env");
 }
 
-const client = new MongoClient(URI, options);
+export const client = new MongoClient(URI, options);
 
 let clientPromise: Promise<MongoClient>;
 

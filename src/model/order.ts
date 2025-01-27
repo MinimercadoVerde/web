@@ -16,6 +16,7 @@ const orderProductSchema = z.object({
 export type OrderProduct = z.infer<typeof orderProductSchema>
 
 export type OrderStatus = 'pending' | 'packed' | 'delivered';
+
 export const unit = z.enum(units)
 
 export const orderSchema = z.object({
@@ -28,10 +29,30 @@ export const orderSchema = z.object({
         apartment: z.number(),
         unit,
     }),
-    createdAt: z.date(),
+    createdAt: z.date().optional(),
     subtotal: z.number(),
     deliveryFee: z.number(),
     status: z.enum(['pending', 'packed', 'delivered']),
 })
+
+export const deliveredOrderSchema = z.object({
+    customerInfo :z.object( {
+        sessionId: z.string(),
+        customerName: z.string(),
+        customerPhone: z.string().min(10).max(15),
+    }),
+    deliveryAddress: z.object({
+        building: z.number(),
+        apartment: z.number(),
+        unit,
+    }),
+    products: z.array(orderProductSchema),
+    createdAt: z.date(),
+    deliveredAt: z.date(),
+    subtotal: z.number(),
+    deliveryFee: z.number(),
+})
+
 export type Unit = z.infer<typeof unit>
 export type Order =  z.infer<typeof orderSchema> & {_id?: ObjectId | string}
+export type DeliveredOrder = z.infer<typeof deliveredOrderSchema> & {_id?: ObjectId | string}

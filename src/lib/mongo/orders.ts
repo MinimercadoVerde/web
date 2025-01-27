@@ -1,7 +1,7 @@
 'use server'
 import { Collection, Db, MongoClient, ObjectId } from "mongodb";
 import clientPromise from "."
-import { Order, OrderStatus } from "@/model/order";
+import { DeliveredOrder, Order, OrderStatus } from "@/model/order";
 import { cookies } from "next/headers";
 import { StockStatus } from "@/model/product";
 import { revalidatePath } from "next/cache";
@@ -11,6 +11,7 @@ import { getLocalDateTime } from "@/globalFunctions";
 let client: MongoClient;
 let db: Db;
 let orders: Collection<Order>;
+let deliveredOrders: Collection<DeliveredOrder>
 
 export async function init() {
     if (db) return
@@ -18,6 +19,7 @@ export async function init() {
         client = await clientPromise
         db = client.db("minimarket")
         orders = db.collection('orders')
+        deliveredOrders = db.collection('delivered_orders')
     } catch (error) {
         throw new Error('Failed to stablish connection to database')
     }
@@ -34,9 +36,11 @@ export const setSessionId = () => {
 
 export async function uploadOrder(order: Order) {
     const sessionId = cookies().get('sessionId')?.value
+
     try {
         await init()
-        const result = await orders.insertOne({ sessionId: sessionId, ...order })
+        const createdAt = getLocalDateTime().now.toBSON()
+        const result = await orders.insertOne({ sessionId: sessionId, createdAt, ...order })
         result.acknowledged && revalidatePath('/api/orders')
         return JSON.stringify(result)
     } catch (error: any) {
@@ -80,10 +84,10 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
 export async function getOrdersByStatus(status?: OrderStatus) {
     try {
         await init()
-        const {today} = getLocalDateTime()
+        const { today } = getLocalDateTime()
         let result;
         if (!status) {
-            result = await orders.find({createdAt: {$gt: today}}).toArray();
+            result = await orders.find({ createdAt: { $gt: today } }).toArray();
         } else {
             result = await orders.find<Order>({ status }).toArray();
         }
@@ -113,9 +117,46 @@ export async function updateOrder(orderId: string, order: Partial<Order>) {
         await init()
         const result = await orders.findOneAndUpdate({ _id: new ObjectId(orderId) }, { $set: order })
         if (!result) return { error: 'order not found', success: false }
-        if (result.status !== "delivered" && order.status === "delivered" ) await upsertTodaysMetrics(result.subtotal + result.deliveryFee, result.deliveryAddress.unit)
+        if (result.status !== "delivered" && order.status === "delivered") await upsertTodaysMetrics(result.subtotal + result.deliveryFee, result.deliveryAddress.unit)
         return { ...result, success: true }
     } catch (error: any) {
         return { error: error.message, success: false }
+    }
+}
+
+export async function deliveredOrderTransaction(order: Order) {
+
+    await init()
+    const session = client.startSession();
+    const { sessionId, customerName, customerPhone, deliveryAddress, deliveryFee, subtotal, products, createdAt } = order
+
+    const now = getLocalDateTime().now.toBSON()
+
+    const deliveredOrder = {
+        createdAt: createdAt || now,
+        deliveredAt: now,
+        customerInfo: {
+            sessionId: sessionId || "unknown",
+            customerName,
+            customerPhone,
+        },
+        products,
+        deliveryFee,
+        deliveryAddress,
+        subtotal
+    }
+
+    try {
+        const transactionResults = await session.withTransaction(async () => {
+            const deliveredAt = getLocalDateTime().now.toBSON()
+            const sessionId = order.sessionId || "unknown"
+            const newDeliveredOrder = await deliveredOrders.insertOne(deliveredOrder, { session })
+
+        })
+
+    } catch (error) {
+
+    } finally {
+        await session.endSession();
     }
 }

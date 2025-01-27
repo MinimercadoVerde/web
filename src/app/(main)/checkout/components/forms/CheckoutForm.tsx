@@ -38,7 +38,6 @@ const CheckoutForm = () => {
         const {name, phone, building, apto, unit} = form
         setDeliveryFee(deliveryFees[unit])
         const products: OrderProduct[] = convertCartToOrder(items)
-        const createdAt = getLocalDateTime().now.toBSON()
 
         const order: Order = {
             products,
@@ -52,7 +51,6 @@ const CheckoutForm = () => {
             subtotal,
             deliveryFee: deliveryFee,
             status: 'pending',
-            createdAt,
         }
 
         const upload = await uploadOrder(order)
