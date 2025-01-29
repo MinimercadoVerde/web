@@ -9,7 +9,7 @@ import PriceInput from './PriceInput'
 import BrandInput from './BrandInput'
 import CategorySelector from './CategorySelector'
 import ImageInput from './ImageInput'
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 import { useState } from 'react'
 import { updateProduct } from '@/lib/mongo/products'
 import CostPriceInput from './CostPriceInput'
@@ -42,7 +42,7 @@ const EditProductForm = ({ product }: { product: Product }) => {
         <Input name="measure" label="Medida" />
         <Input name="description" label='Descripción' defaultValue=" " />
         <CategorySelector />
-        <DevTool {...form} />
+        {/* <DevTool {...form} /> */}
         <button type='submit' disabled={!isValid} className='submit-button'>
           {formStatus === "submitting" ? 'Cargando...' : 'Actualizar Producto'}
         </button>
