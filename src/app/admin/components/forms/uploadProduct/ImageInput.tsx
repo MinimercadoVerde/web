@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { uploadImage } from "@/lib/cloudinary/actions";
 import { CldImage } from "next-cloudinary";
-import { LuLoader2 } from "react-icons/lu";
+import { LuLoader } from "react-icons/lu";
 import { UploadProduct } from "../productResolver";
 
 const ImageInput = () => {
@@ -59,7 +59,7 @@ const ImageInput = () => {
             );
           case "loading":
             return (
-              <LuLoader2 className="animate-spin text-4xl text-blue-500" />
+              <LuLoader className="animate-spin text-4xl text-blue-500" />
             );
 
           case "loaded":
