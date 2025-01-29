@@ -69,7 +69,7 @@ const ImageInput = () => {
                   src={imageId}
                   alt="product image"
                   fill
-                  className="aspect-square h-full rounded-sm object-cover"
+                  className="aspect-square h-full rounded-xs object-cover"
                 />
               </figure>
             );

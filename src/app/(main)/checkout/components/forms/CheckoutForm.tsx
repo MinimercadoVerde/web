@@ -87,7 +87,7 @@ const CheckoutForm = () => {
                         <form className="size-full flex flex-col items-center *:my-3 justify-evenly px-5 mx-auto" action={validateAndUpload}>
                             <h1 className="text-center font-medium text-gray-600 ">Datos de tu pedido</h1>
                             <FormProvider {...form}>
-                                <div className="flex-grow w-full max-w-lg overflow-hidden scroll-smooth" ref={formContainer}>
+                                <div className="grow w-full max-w-lg overflow-hidden scroll-smooth" ref={formContainer}>
                                     <div className="relative snap-center size-full flex flex-col md:flex-row w-full  justify-between items-center *:w-full">
                                         <div >
                                             <Input label='Nombre' name='name' placeholder="Quien recibe el pedido?" autoCapitalize='words' required autoFocus setStage={setStage} />
@@ -116,7 +116,7 @@ const CheckoutForm = () => {
                                 </div>
                                 {
                                     stage < 4 && 
-                                <button className='bg-white text-lg px-5 py-2 rounded-full shadow-sm' type='button'>Siguiente</button>
+                                <button className='bg-white text-lg px-5 py-2 rounded-full shadow-xs' type='button'>Siguiente</button>
                                 }
                                 <button type="submit" style={stage >= 4 ? { opacity: 100 } : { opacity: 0 }} className='bg-blue-500 px-5 py-2 rounded-full text-xl text-white disabled:bg-gray-300 my-3' disabled={!formState.isValid} autoFocus>Hacer pedido</button>
                             </FormProvider>

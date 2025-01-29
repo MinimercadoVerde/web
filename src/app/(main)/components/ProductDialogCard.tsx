@@ -101,7 +101,7 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
               <span className="text-slate-500">{brand}</span>
             </div>
             <div className="flex justify-between">
-              <span className="-z-10 text-sm text-slate-500 outline-none">
+              <span className="-z-10 text-sm text-slate-500 outline-hidden">
                 {measure}
               </span>
 
@@ -112,7 +112,7 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
           </div>
           <div className="flex h-16 flex-col">
             {/* <Description description={description} /> */}
-            <div className="flex w-full flex-grow items-center justify-center gap-5 py-2 text-xl">
+            <div className="flex w-full grow items-center justify-center gap-5 py-2 text-xl">
               {stockStatus === "out" ? (
                 <span className="font-semibold text-red-600">Agotado</span>
               ) : (

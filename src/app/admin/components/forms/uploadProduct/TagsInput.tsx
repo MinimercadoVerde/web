@@ -33,7 +33,7 @@ const TagsInput = ({ value = [], category = "otra", onChange }: Props) => {
         <span className="text-sm font-semibold text-gray-600">Etiquetas</span>
         <input
           type="text"
-          className="decoration-transparent outline-none w-24"
+          className="decoration-transparent outline-hidden w-24"
           onKeyDown={handleClickEnter}
           placeholder="add tag"
           list="tags"

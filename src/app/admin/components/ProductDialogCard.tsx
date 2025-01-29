@@ -85,7 +85,7 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
               <span className="text-slate-500">{brand}</span>
             </div>
             <div className="flex justify-between">
-              <span className="-z-10 text-sm text-slate-500 outline-none">
+              <span className="-z-10 text-sm text-slate-500 outline-hidden">
                 {measure}
               </span>
 

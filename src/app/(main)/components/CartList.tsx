@@ -27,7 +27,7 @@ const CartList = ({ openCartList, setOpenCartList }: props) => {
     <>
       {openCartList && (
         <div
-          className="absolute inset-0 backdrop-blur-sm"
+          className="absolute inset-0 backdrop-blur-xs"
           onClick={() => setOpenCartList(false)}
         />
       )}
@@ -60,7 +60,7 @@ const CartList = ({ openCartList, setOpenCartList }: props) => {
           </div>
         ) : (
           <>
-            <div className="flex w-full flex-grow flex-col overflow-auto">
+            <div className="flex w-full grow flex-col overflow-auto">
               {cartList.map((product) => (
                 <ProductListItem product={product} key={product.barcode} />
               ))}
@@ -98,7 +98,7 @@ const ProductListItem = ({ product }: { product: CartProduct }) => {
           className="object-cover"
         />
       </figure>
-      <div className="flex w-60 flex-grow flex-col">
+      <div className="flex w-60 grow flex-col">
         <span>{name}</span>
         <span className="text-xs text-gray-600">{formatPrice(price)} c/u</span>
         <span className="font-semibold">{formatPrice(price * quantity)}</span>

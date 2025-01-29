@@ -40,9 +40,9 @@ const SearchBar = () => {
     }
 
     return (
-        <div className="bg-white relative flex flex-row flex-grow max-w-xl z-50 rounded-full border-gray-200 border-2 py-2">
+        <div className="bg-white relative flex flex-row grow max-w-xl z-50 rounded-full border-gray-200 border-2 py-2">
             <input
-                className="w-full outline-none px-5 bg-transparent text-2xl"
+                className="w-full outline-hidden px-5 bg-transparent text-2xl"
                 placeholder="Buscar producto"
                 value={inputValue}
                 onChange={(e) => {setInputValue(e.target.value); setQuery(e.target.value)}}
@@ -87,7 +87,7 @@ const ProductListItem = ({ product }: { product: Product }) => {
                 <div className="min-w-16 md:min-w-20">
                     <ProductImage src={image} alt={name} />
                 </div>
-                <div className="*:mx-2 items-baseline flex-grow max-w-full ">
+                <div className="*:mx-2 items-baseline grow max-w-full ">
                     <b className="line-clamp-1">{name}</b>
                     <span className="text-sm">{brand}</span>
                     <span className="text-sm">{measure}</span>

@@ -12,8 +12,8 @@ const mainPageLayout = async ({
     return (
         <main className='relative h-svh w-screen overflow-clip flex flex-col text-slate-800 bg-stone-50'>
             <StoreProvider>
-                <div className='relative flex flex-grow h-view flex-col lg:flex-row'>
-                    <section className='flex-grow h-full overflow-y-scroll contentSection z-0'>
+                <div className='relative flex grow h-view flex-col lg:flex-row'>
+                    <section className='grow h-full overflow-y-scroll contentSection z-0'>
                         {children}
                     </section>
                     <Basket />

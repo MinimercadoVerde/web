@@ -67,7 +67,7 @@ const UploadProductForm = () => {
               </button>
             )}
           </form>
-          <button type="button" className="size-0 opacity-0 outline-none">
+          <button type="button" className="size-0 opacity-0 outline-hidden">
             void focus out of page
           </button>
         </>
