@@ -18,7 +18,6 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
     barcode,
     name,
     price,
-    description,
     image,
     measure,
     brand,
@@ -70,7 +69,7 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
   return (
     <>
       <button
-        className="absolute z-10 size-full bg-transparent outline-1 outline-blue-600"
+        className="absolute z-10 size-full bg-transparent outline-1 outline-transparent focus-visible:outline-blue-600"
         title={name}
         onClick={() => dialog.current?.showModal()}
       />
