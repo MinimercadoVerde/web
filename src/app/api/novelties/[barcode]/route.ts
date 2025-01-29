@@ -37,7 +37,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
 
-    const searchParams = await request.nextUrl.searchParams
+    const searchParams = request.nextUrl.searchParams
 
     const reportType = searchParams.get('type') as ReportType
     if (!reportType) return NextResponse.json({ error: 'Report type not specified' }, { status: 400, headers })
@@ -49,7 +49,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     try {
         const response = await deleteNovelty(reportType, barcode)
-        return NextResponse.json(response, { headers })
+        return NextResponse.json(response, {status: 200, headers })
     } catch (error: any) {
         if (error.message === 'Unexpected end of JSON input') return NextResponse.json({ error: "No se puedo leer correctamente el body" }, { status: 500, headers })
         return NextResponse.json({ error: error.message }, { status: 500, headers })
