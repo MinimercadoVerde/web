@@ -9,7 +9,7 @@ const ShoppingSectionsLayout = async ({
 }>) => {
     return (
         <>
-            <header className='bg-stone-50 z-50 sticky top-0 flex justify-center items-center text-gray-900 py-3 gap-3 px-3 md:px-5'>
+            <header className='bg-stone-50 z-50 sticky top-0 flex justify-center items-center text-gray-900 py-5 gap-3 px-3 md:px-5'>
                 <OrderInProgress />
                 <SearchBar />
             </header>

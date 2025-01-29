@@ -1,6 +1,6 @@
 import { upsertTodaysMetrics } from "@/lib/mongo/metrics";
 import { unit } from "@/model/order";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 export async function PUT(request: NextRequest) {

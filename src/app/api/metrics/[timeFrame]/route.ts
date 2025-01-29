@@ -1,5 +1,5 @@
 import { getCurrentMetricsByTimeFrame, TimeFrame, timeFrameSchema } from "@/lib/mongo/metrics";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ timeFrame: TimeFrame }> }) {

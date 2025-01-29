@@ -1,11 +1,10 @@
 import { getNovelties } from "@/lib/mongo/novelties";
-import { noveltiesSchema } from "@/model/novelties";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic'
 
-const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
-
-export async function GET(request: NextRequest, response: NextResponse) {
+export async function GET(request: NextRequest) {
+    const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
     try {
         const novelties = await getNovelties()
         return NextResponse.json(novelties, { headers })

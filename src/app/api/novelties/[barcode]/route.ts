@@ -1,6 +1,6 @@
 import { postNewProductReport, postPendingValidationReport } from "@/lib/mongo/novelties";
 import { NewProductReport, NewProductReportSchema, noveltiesSchema, PendingValidationReport, PendingValidationReportSchema } from "@/model/novelties";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 

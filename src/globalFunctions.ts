@@ -24,7 +24,9 @@ function removeAccents(string: string) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 }
-
+function toURI (string: string){
+  return removeAccents(toKebabCase(string))
+}
 function getLocalDateTime() {
   const now = DateTime.now().setZone("America/Bogota") as DateTime<true>
   const today = now.startOf('day').toBSON()
@@ -32,6 +34,16 @@ function getLocalDateTime() {
   const week = now.weekNumber
 
   return {now, today, week, month, year}
+}
+
+function toTitleCase(str: string): string {
+  return str
+    .split(" ")                        // Split the string into an array of words
+    .map(word =>                        // Map over each word
+      word.charAt(0).toUpperCase() +     // Capitalize the first letter
+      word.slice(1).toLowerCase()       // Convert the rest of the letters to lowercase
+    )
+    .join(" ");                         // Join the words back into a single string
 }
 
 function toKebabCase(input: string): string {
@@ -54,6 +66,8 @@ export {
   removeAccents,
   getLocalDateTime,
   toKebabCase,
-  kebabToLowerCase
+  kebabToLowerCase,
+  toTitleCase,
+  toURI
 };
 

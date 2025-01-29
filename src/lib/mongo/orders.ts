@@ -29,13 +29,13 @@ export async function init() {
     await init()
 })
 
-export const setSessionId = () => {
-    const sessionId = cookies().get('sessionId')?.value
-    if (!sessionId) { const id = crypto.randomUUID(); cookies().set('sessionId', id) }
+export const setSessionId = async () => {
+    const sessionId  =(await cookies()).get('sessionId')?.value
+    if (!sessionId) { const id = crypto.randomUUID(); (await cookies()).set('sessionId', id) }
 }
 
 export async function uploadOrder(order: Order) {
-    const sessionId = cookies().get('sessionId')?.value
+    const sessionId = (await cookies()).get('sessionId')?.value
 
     try {
         await init()
@@ -49,7 +49,7 @@ export async function uploadOrder(order: Order) {
 }
 
 export async function getOrdersBySessionId() {
-    const sessionId = cookies().get('sessionId')?.value
+    const sessionId = (await cookies()).get('sessionId')?.value
     if (!sessionId) return JSON.stringify([]);
     try {
         await init()

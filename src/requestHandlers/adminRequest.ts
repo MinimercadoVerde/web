@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const adminRequest = (url: string, pathname: string) => {
-    const adminLogged = cookies().has('adminSession');
+const adminRequest = async (url: string, pathname: string) => {
+    const adminLogged = (await cookies()).has('adminSession');
 
     if (!adminLogged) {
         if (pathname.startsWith('/admin/login')) return NextResponse.next();

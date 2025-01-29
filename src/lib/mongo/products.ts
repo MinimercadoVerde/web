@@ -81,7 +81,7 @@ export async function findByBarcode(barcode: string) {
 
 
 export async function uploadProduct(product: UploadProduct) {
-    const { barcode, name, price, brand, category, measure, costPrice, tags , subcategory} = product
+    const { barcode, name, price, brand, category, measure, costPrice, tags, subcategory } = product
     const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
 
     const productPayload: OptionalId<Product> = {
@@ -132,7 +132,7 @@ export async function getProductsByCategory(category: Category) {
 
     try {
         await init()
-        const result = await products.find({ category }, { projection: { _id: 0 } }).sort({ subcategory: 1,brand:1, measure:1, name: 1 }).toArray();
+        const result = await products.find({ category }, { projection: { _id: 0 } }).sort({ subcategory: 1, brand: 1, measure: 1, name: 1 }).toArray();
         return result
     } catch (error: any) {
         throw new Error(error)
@@ -155,15 +155,23 @@ export async function getSamplesByCategory(category: Category, sample?: number) 
     }
 }
 export async function getProductsBySubcategory(category: Category, subcategory: string) {
-
     try {
-        await init()
-        const result = await products.find({$and: [{category}, {subcategory}]}, { projection: { _id: 0 } }).sort({name:1, brand: 1 }).toArray();
-        return result
+        // Inicializar la conexión si es necesario
+        await init();
+
+        // Realizar la consulta en la base de datos
+        const result = await products.find({ category, subcategory }, { projection: { _id: 0 } })
+            .sort({ name: 1, brand: 1 })
+            .toArray();
+
+        return result;
     } catch (error: any) {
-        throw new Error(error)
+        // Manejar el error con más detalles
+        console.error("Error while fetching products:", error);
+        throw new Error(`Failed to fetch products: ${error.message}`);
     }
 }
+
 
 export async function getProductsByStockStatus(status: StockStatus) {
 

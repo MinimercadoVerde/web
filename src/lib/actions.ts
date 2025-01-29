@@ -8,6 +8,6 @@ export async function setAllowedToShopOvertime() {
     const allowedToShopOvertime = currentHour === 20 && currentMin >= 55;
 
     if (allowedToShopOvertime) {
-        cookies().set("allowedToShopOvertime", "true", {maxAge: 1200});
+        (await cookies()).set("allowedToShopOvertime", "true", {maxAge: 1200});
     }
 }

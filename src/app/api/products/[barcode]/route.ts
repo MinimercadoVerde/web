@@ -1,7 +1,7 @@
 import { updateOrdersProducts } from "@/lib/mongo/orders"
 import { findByBarcode, updateProductValues } from "@/lib/mongo/products"
 import { productSchema, } from "@/model/product"
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 
 const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }

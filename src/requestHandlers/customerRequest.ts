@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const customerRequest = (url: string, pathname: string) => {
+const customerRequest = async (url: string, pathname: string) => {
 
     const formatter = new Intl.DateTimeFormat('en-US', {
       timeZone: 'America/Bogota',
@@ -14,7 +14,7 @@ const customerRequest = (url: string, pathname: string) => {
     const open = true // this is just while updates initial products
   
     if (!open) {
-      const allowedToShopOvertime = cookies().has('allowedToShopOvertime');
+      const allowedToShopOvertime = (await cookies()).has('allowedToShopOvertime');
       if (allowedToShopOvertime) return NextResponse.next()
   
       if (pathname.startsWith('/outside-hours')) return NextResponse.next();

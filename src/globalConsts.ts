@@ -56,7 +56,7 @@ const brands = [
 
 const categories = ["canasta familiar", "higiene personal", "mecato", "licor", "aseo", "bebidas", "cárnicos", "frutas y verduras", "mascotas", "otra"] as const;
 
-const subcategories: { [K in Category]?: readonly string[]; } = {
+const subcategories: { [K in Category]: readonly string[]; } = {
   "canasta familiar": [
     'parva',
     'arepas',

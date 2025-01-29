@@ -1,6 +1,6 @@
 import { getOrderById, updateOrder } from "@/lib/mongo/orders"
 import { orderSchema } from "@/model/order"
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 
 const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
 
