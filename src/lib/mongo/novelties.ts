@@ -2,6 +2,7 @@
 import { Collection, Db, MongoClient } from "mongodb";
 import clientPromise from "."
 import { NewProductReport, Novelties, PendingValidationReport } from "@/model/novelties";
+import { ReportType } from "@/app/api/novelties/[barcode]/route";
 
 let client: MongoClient;
 let db: Db;
@@ -33,9 +34,24 @@ export async function postNewProductReport (body: NewProductReport){
     return novelties.updateOne({},{"$push": {newProducts: body} })
 }
 
+
 export async function getNovelties() {
 
     await init()
     return novelties.findOne({})
 
+}
+export async function deleteNovelty( type: ReportType, barcode: string) {
+
+
+    await init()
+    switch (type) {
+        case 'new_product':
+            return await novelties.updateOne({}, {"$pull": {newProducts: { barcode}}})
+        case 'validate':
+            return await novelties.updateOne({}, {"$pull": {pendingValidation: { barcode }}})
+        default:
+            throw new Error('Invalid report type')
+    }
+ 
 }

@@ -1,4 +1,4 @@
-import { postNewProductReport, postPendingValidationReport } from "@/lib/mongo/novelties";
+import { deleteNovelty, postNewProductReport, postPendingValidationReport } from "@/lib/mongo/novelties";
 import { NewProductReport, NewProductReportSchema, noveltiesSchema, PendingValidationReport, PendingValidationReportSchema } from "@/model/novelties";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -8,7 +8,7 @@ const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, 
 
 
 const reportTypeSchema = z.enum(["new_product", "validate"])
-type ReportType = z.infer<typeof reportTypeSchema>
+export type ReportType = z.infer<typeof reportTypeSchema>
 export async function POST(request: NextRequest) {
 
     const searchParams = request.nextUrl.searchParams
@@ -33,6 +33,29 @@ export async function POST(request: NextRequest) {
 
     }
 }
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ barcode: string }> }) {
+
+    const headers = { 'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json' }
+
+    const searchParams = await request.nextUrl.searchParams
+
+    const reportType = searchParams.get('type') as ReportType
+    if (!reportType) return NextResponse.json({ error: 'Report type not specified' }, { status: 400, headers })
+
+    const barcode = (await params).barcode
+    if (!reportTypeSchema.safeParse(reportType)) {
+        return NextResponse.json({ error: 'Invalid report type' }, { status: 400, headers })
+    }
+
+    try {
+        const response = await deleteNovelty(reportType, barcode)
+        return NextResponse.json(response, { headers })
+    } catch (error: any) {
+        if (error.message === 'Unexpected end of JSON input') return NextResponse.json({ error: "No se puedo leer correctamente el body" }, { status: 500, headers })
+        return NextResponse.json({ error: error.message }, { status: 500, headers })
+
+    }
+}
 
 
 const post = (reportType: ReportType, body: Object) => {
@@ -43,6 +66,7 @@ const post = (reportType: ReportType, body: Object) => {
             return postPendingValidationReport(body as PendingValidationReport)
     }
 }
+
 const validateBody = (reportType: ReportType, body: Object) => {
     switch (reportType) {
         case "new_product":
