@@ -1,6 +1,13 @@
 const page = () => {
   return (
-    <div>page</div>
+
+  <section className="text-center">
+    <h1>
+      Estamos preparando esta sección
+    </h1>
+
+
+  </section>
   )
 }
 

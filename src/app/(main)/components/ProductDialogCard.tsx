@@ -69,7 +69,7 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
   return (
     <>
       <button
-        className="absolute z-10 size-full bg-transparent outline-1 outline-transparent focus-visible:outline-blue-600"
+        className="absolute z-[5] size-full bg-transparent outline-1 outline-transparent focus-visible:outline-blue-600"
         title={name}
         onClick={() => dialog.current?.showModal()}
       />
@@ -93,14 +93,14 @@ const ProductDialogCard = ({ product }: { product: Product }) => {
             <div className="p-5">
               <ProductImage src={image} alt={name} />
             </div>
-            <div className="mb-2">
-              <span className="line-clamp-3 text-lg font-medium leading-6 text-slate-800">
+            <div className="mb-3">
+              <span className="line-clamp-3 mb-1 text-lg font-medium leading-6 text-slate-800">
                 {name}
               </span>
               <span className="text-slate-500">{brand}</span>
             </div>
             <div className="flex justify-between">
-              <span className="-z-10 text-sm text-slate-500 outline-hidden">
+              <span className="-z-10 text-md text-slate-500 outline-hidden">
                 {measure}
               </span>
 

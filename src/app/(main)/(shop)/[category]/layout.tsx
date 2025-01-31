@@ -36,11 +36,11 @@ const layout = async ({
 
   return (
     <main>
-      <div className="absolute z-30 w-full bg-stone-50 pb-5 shadow-md">
-        <div className="grid w-full grid-cols-3 place-items-center">
+      <div className="sticky top-0 z-30 w-full bg-stone-50 *:py-5 shadow-md">
+        <div className="grid gap-2 md:gap-5 lg:gap-10 xl:gap-20 w-full grid-cols-3 place-items-center *:w-full">
           <Link
             href="/"
-            className="flex items-center gap-1 text-green-600 sm:text-lg md:text-xl lg:text-2xl"
+            className="flex items-center justify-center gap-1 text-green-600 sm:text-lg md:text-xl lg:text-2xl"
           >
             <IoIosArrowBack /> Inicio
           </Link>
