@@ -20,7 +20,7 @@ const SearchBar = () => {
             setLoading(true);
             if (query) {
                 const response = await querySearch(query);
-                const results = JSON.parse(response) as Product[];
+                const results = response as Product[];
                 setResults(results);
                 setLoading(false);
             } else {
