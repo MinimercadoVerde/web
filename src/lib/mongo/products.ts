@@ -1,5 +1,5 @@
 'use server'
-import { Collection, Db, MongoClient, OptionalId } from "mongodb";
+import { Collection, Db, MongoClient, OptionalId, SortDirection } from "mongodb";
 import clientPromise from "."
 import { BaseProduct, Category, Product, StockStatus } from "@/model/product";
 import { formatName } from "@/globalFunctions";
@@ -30,7 +30,7 @@ export async function init() {
 
 export async function querySearch(query: string) {
     try {
-        if (query.length < 3) return JSON.stringify([])
+        if (query.length < 3) return []
         await init()
         const result = await products.aggregate([
             {
@@ -58,9 +58,9 @@ export async function querySearch(query: string) {
                     }
                 }
             }
-        ]).toArray();
+        ]).project({_id: 0}).toArray();
 
-        return JSON.stringify(result)
+        return result
     } catch (error: any) {
         throw new Error(error)
     }
@@ -70,7 +70,7 @@ export async function findByBarcode(barcode: string) {
     try {
         await init()
 
-        const result = await products.findOne({ barcode: barcode })
+        const result = await products.findOne({ barcode: barcode },{projection: {_id: 0}})
 
         return result?.barcode && result
 
@@ -151,6 +151,7 @@ export async function getSamplesByCategory(category: Category, sample?: number) 
         return result
     } catch (error: any) {
         throw new Error(error)
+
 
     }
 }
@@ -236,6 +237,17 @@ export async function getAllProducts() {
     }
 }
 
+
+export async function filterProducts (query: Partial<Product>, sort?: { [K in keyof Product]?: SortDirection}){
+    try {
+        await init()
+        const result = await products.find(query, {projection: {_id: 0}}).sort(sort || {}).toArray();
+        return result
+    } catch (err: any) {
+        throw new Error(err.message)
+    }
+}
+ 
 export async function getWithoutImageProducts() {
     try {
         await init()

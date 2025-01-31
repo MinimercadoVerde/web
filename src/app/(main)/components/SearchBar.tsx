@@ -16,11 +16,12 @@ const SearchBar = () => {
     const [inputValue, setInputValue] = useState<string>("")
 
     useEffect(() => {
+        
         const fetchResults = async () => {
             setLoading(true);
             if (query) {
                 const response = await querySearch(query);
-                const results = JSON.parse(response) as Product[];
+                const results = response as Product[];
                 setResults(results);
                 setLoading(false);
             } else {
@@ -50,7 +51,7 @@ const SearchBar = () => {
             />
             {
                 results.length > 0 &&
-                <ul className="fixed left-0 md:absolute translate-y-10  w-full shadow-md " >
+                <ul className="fixed left-0 md:absolute translate-y-10  w-full shadow-md max-h-96 overflow-scroll" >
                     {results.map((result) => (
                         <ProductListItem key={result.barcode} product={result} />
                     ))}
