@@ -76,6 +76,7 @@ const subcategories: { [K in Category]: readonly string[]; } = {
     "carnes rojas",
     "carnes blancas",
     "embutidos",
+    "procesados",
     "otros"
   ],
   "frutas y verduras": [
@@ -108,9 +109,7 @@ const subcategories: { [K in Category]: readonly string[]; } = {
     'galletas',
     'snacks',
     'dulces',
-    'repostería',
-    'mani y nueces',
-    'bocadillos típicos',
+    'ponqués',
     'otros'
   ] as const,
 
@@ -138,6 +137,7 @@ const subcategories: { [K in Category]: readonly string[]; } = {
   "bebidas": [
     'gaseosas',
     'jugos',
+    'batidos y malteadas',
     'energéticas',
     'hidratantes',
     'otros'
@@ -155,23 +155,18 @@ const subcategories: { [K in Category]: readonly string[]; } = {
 
   "otra": [
     'tecnología',
-    //   'libros', 
     'papelería',
     'farmacia',
-    //   'juguetes', 
     'decoración',
     'iluminación',
-    //   'ropa y accesorios', 
-    //   'calzado', 
-    //   'muebles', 
     'herramientas',
-    // 'jardinería', 
-    // 'electrodomésticos', 
     'desechables',
     'deportes',
+    'repostería',
     'otros'
   ] as const
 };
+
 
 const units = ['bulevar', 'sendero', 'villa'] as const
 type Unit = typeof units[number]
