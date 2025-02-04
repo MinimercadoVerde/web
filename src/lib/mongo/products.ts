@@ -2,7 +2,7 @@
 import { Collection, Db, MongoClient, OptionalId, SortDirection } from "mongodb";
 import clientPromise from "."
 import { BaseProduct, Category, Product, StockStatus } from "@/model/product";
-import { formatName } from "@/globalFunctions";
+import { formatName, trimObject } from "@/globalFunctions";
 import { revalidatePath } from "next/cache";
 import { UploadProduct } from "@/app/admin/components/forms/productResolver";
 import axios from "axios";
@@ -58,7 +58,7 @@ export async function querySearch(query: string) {
                     }
                 }
             }
-        ]).project({_id: 0}).toArray();
+        ]).project({ _id: 0 }).toArray();
 
         return result
     } catch (error: any) {
@@ -70,7 +70,7 @@ export async function findByBarcode(barcode: string) {
     try {
         await init()
 
-        const result = await products.findOne({ barcode: barcode },{projection: {_id: 0}})
+        const result = await products.findOne({ barcode: barcode }, { projection: { _id: 0 } })
 
         return result?.barcode && result
 
@@ -82,7 +82,7 @@ export async function findByBarcode(barcode: string) {
 
 export async function uploadProduct(product: UploadProduct) {
     const { barcode, name, price, brand, category, measure, costPrice, tags, subcategory } = product
-    const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
+    const searchString = `${name} ${brand} ${measure}`.toLowerCase()
 
     const productPayload: OptionalId<Product> = {
         searchString,
@@ -100,7 +100,7 @@ export async function uploadProduct(product: UploadProduct) {
         tags,
     }
 
-    const baseProductPayload: BaseProduct = {
+    const baseProductPayload: BaseProduct = trimObject({
         barcode,
         name: formatName(name),
         measure,
@@ -109,8 +109,9 @@ export async function uploadProduct(product: UploadProduct) {
         image: '',
         category,
         subcategory,
+        checked: false,
         tags
-    }
+    })
 
 
     const uploadToMain = await axios.post(`${process.env.MINIMARKETS_URL}/api/products`, baseProductPayload).then(response => response).catch((error) => { console.log(error.message); return null })
@@ -119,7 +120,7 @@ export async function uploadProduct(product: UploadProduct) {
 
     try {
         await init()
-        const result = await products.insertOne(productPayload)
+        const result = await products.insertOne(trimObject(productPayload))
         result.insertedId && revalidatePath('/', 'layout')
         return JSON.stringify(result)
 
@@ -189,7 +190,7 @@ export async function getProductsByStockStatus(status: StockStatus) {
 export async function updateProductValues(barcode: string, body: Partial<Product>) {
     try {
         await init()
-        const result = await products.updateOne({ barcode }, { $set: body })
+        const result = await products.updateOne({ barcode }, { $set: trimObject(body) })
         if (result.matchedCount <= 0) return { error: 'product not found', success: false }
         revalidatePath('/', 'layout')
         return { ...result, success: true }
@@ -200,7 +201,7 @@ export async function updateProductValues(barcode: string, body: Partial<Product
 
 export async function updateProduct(product: UploadProduct) {
     const { barcode, name, price, description, brand, category, costPrice, image, measure, tags } = product
-    const searchString = `${name} ${brand} ${measure}`.toLowerCase().trim()
+    const searchString = `${name} ${brand} ${measure}`.toLowerCase()
 
     const productPayload = {
         searchString,
@@ -218,7 +219,7 @@ export async function updateProduct(product: UploadProduct) {
     }
     try {
         await init()
-        const result = await products.updateOne({ barcode }, { $set: productPayload })
+        const result = await products.updateOne({ barcode }, { $set: trimObject(productPayload) })
         result.modifiedCount > 0 && revalidatePath('/', 'layout')
         return JSON.stringify(result)
     } catch (error: any) {
@@ -238,16 +239,16 @@ export async function getAllProducts() {
 }
 
 
-export async function filterProducts (query: Partial<Product>, sort?: { [K in keyof Product]?: SortDirection}){
+export async function filterProducts(query: Partial<Product>, sort?: { [K in keyof Product]?: SortDirection }) {
     try {
         await init()
-        const result = await products.find(query, {projection: {_id: 0}}).sort(sort || {}).toArray();
+        const result = await products.find(query, { projection: { _id: 0 } }).sort(sort || {}).toArray();
         return result
     } catch (err: any) {
         throw new Error(err.message)
     }
 }
- 
+
 export async function getWithoutImageProducts() {
     try {
         await init()

@@ -24,7 +24,7 @@ function removeAccents(string: string) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 }
-function toURI (string: string){
+function toURI(string: string) {
   return removeAccents(toKebabCase(string))
 }
 function getLocalDateTime() {
@@ -33,7 +33,7 @@ function getLocalDateTime() {
   const { month, year } = now
   const week = now.weekNumber
 
-  return {now, today, week, month, year}
+  return { now, today, week, month, year }
 }
 
 function toTitleCase(str: string): string {
@@ -51,12 +51,22 @@ function toKebabCase(input: string): string {
     .replace(/([a-z])([A-Z])/g, '$1-$2') // Separa palabras cuando hay un cambio de mayúsculas a minúsculas
     .replace(/[\s_]+/g, '-') // Reemplaza espacios y guiones bajos por guiones
     .toLowerCase()
-    : 
+    :
     "none" // Convierte todo a minúsculas
 }
 
 function kebabToLowerCase(input: string): string {
   return input.replace(/-/g, ' ').toLowerCase();
+}
+function trimObject<T extends Record<string, any>>(obj: T): T {
+  for (const key in obj) {
+    if (typeof obj[key] === "string") {
+      obj[key] = obj[key].trim();
+    } else if (typeof obj[key] === "object" && obj[key] !== null) {
+      obj[key] = trimObject(obj[key]); // Recursively trim nested objects
+    }
+  }
+  return obj;
 }
 
 export {
@@ -68,6 +78,7 @@ export {
   toKebabCase,
   kebabToLowerCase,
   toTitleCase,
-  toURI
+  toURI,
+  trimObject
 };
 
