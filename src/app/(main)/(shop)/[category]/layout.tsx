@@ -4,8 +4,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import CategorySelector from "./CategorySelector";
 import SubcategorySelector from "./SubcategorySelector";
 import { Category } from "@/model/product";
-import { kebabToLowerCase, toKebabCase } from "@/globalFunctions";
-import { categories, subcategories } from "@/globalConsts";
+import { kebabToLowerCase } from "@/globalFunctions";
+import { categories } from "@/globalConsts";
 const slugify = (text: string) => text.replace(/\s+/g, "-").toLowerCase();
 
 export async function generateStaticParams() {
@@ -14,7 +14,7 @@ export async function generateStaticParams() {
 
   for (const category of categories) {
     if (!excludedCategories.includes(category)) {
-      const encodedCategory = encodeURIComponent(slugify(category));
+      const encodedCategory = slugify(category);
       params.push({ category: encodedCategory });
     }
   }

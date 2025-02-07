@@ -9,7 +9,7 @@ const CategoryPage = async ({
   params: Promise<{ category: Category }>;
 }) => {
   const { category } = await params;
-  const decodedCategory = decodeURIComponent(
+  const decodedCategory = decodeURI(
     kebabToLowerCase(category),
   ) as Category;
 
