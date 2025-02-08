@@ -17,7 +17,7 @@ export async function init() {
     if (db) return
     try {
         client = await clientPromise
-        db = client.db("minimarket")
+        db = client.db(process.env.CLIENT_ID)
         orders = db.collection('orders')
         deliveredOrders = db.collection('delivered_orders')
     } catch (error) {

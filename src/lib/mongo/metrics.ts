@@ -14,7 +14,7 @@ export async function init() {
     if (db) return
     try {
         client = await clientPromise
-        db = client.db("minimarket")
+        db = client.db(process.env.CLIENT_ID)
         metrics = db.collection('metrics')
     } catch (error) {
         throw new Error('Failed to stablish connection to database')

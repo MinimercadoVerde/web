@@ -1,11 +1,12 @@
 'use server'
 import { Collection, Db, MongoClient, OptionalId, SortDirection } from "mongodb";
 import clientPromise from "."
-import { BaseProduct, Category, Product, StockStatus } from "@/model/product";
+import { BaseProduct, Category, Product, ProductFromAdmin, StockStatus } from "@/model/product";
 import { formatName, trimObject } from "@/globalFunctions";
 import { revalidatePath } from "next/cache";
 import { UploadProduct } from "@/app/admin/components/forms/productResolver";
 import axios from "axios";
+import { productFiller } from "@/globalConsts";
 
 let client: MongoClient;
 let db: Db;
@@ -16,7 +17,7 @@ export async function init() {
     if (db) return
     try {
         client = await clientPromise
-        db = client.db("minimarket")
+        db = client.db(process.env.CLIENT_ID)
         products = db.collection('products')
     } catch (error) {
         throw new Error('Failed to stablish connection to database')
@@ -79,11 +80,9 @@ export async function findByBarcode(barcode: string) {
     }
 }
 
-
-export async function uploadProduct(product: UploadProduct) {
+ export async function uploadProduct(product: UploadProduct) {
     const { barcode, name, price, brand, category, measure, costPrice, tags, subcategory } = product
-    const searchString = `${name} ${brand} ${measure}`.toLowerCase()
-
+    const searchString = `${name} ${brand} ${measure}`.trim().toLowerCase()
     const productPayload: OptionalId<Product> = {
         searchString,
         barcode,
@@ -99,7 +98,6 @@ export async function uploadProduct(product: UploadProduct) {
         stockStatus: 'available',
         tags,
     }
-
     const baseProductPayload: BaseProduct = trimObject({
         barcode,
         name: formatName(name),
@@ -112,12 +110,8 @@ export async function uploadProduct(product: UploadProduct) {
         checked: false,
         tags
     })
-
-
     const uploadToMain = await axios.post(`${process.env.MINIMARKETS_URL}/api/products`, baseProductPayload).then(response => response).catch((error) => { console.log(error.message); return null })
-
     if (!uploadToMain?.data.acknowledged) return null;
-
     try {
         await init()
         const result = await products.insertOne(trimObject(productPayload))
@@ -128,6 +122,19 @@ export async function uploadProduct(product: UploadProduct) {
         throw new Error(error)
     }
 }
+
+export async function uploadNewFromAdmin(product: ProductFromAdmin) {
+
+    try {
+        await init()
+        const result = await products.insertOne(trimObject({ ...productFiller, ...product }))
+        
+        return result
+    } catch (error: any) {
+        throw new Error(error)
+    }
+}
+
 
 export async function getProductsByCategory(category: Category) {
 
