@@ -1,25 +1,7 @@
 import { brands, categories } from "@/globalConsts";
 import { z } from "zod";
 
-export type Category = typeof categories[number];
-export type StockStatus = 'low' | 'available' | 'out';
-
-export interface BaseProduct {
-    _id?: string;
-    barcode: string;
-    name: string;
-    measure: string;
-    brand: Brand | string;
-    description?: string; 
-    image: string;
-    category: Category;
-    subcategory: string;
-    tags: string[]
-}
-
 const brandOptions = z.enum(brands)
-export type Brand = z.infer<typeof brandOptions>;
-
 export const baseProductSchema = z.object({//+
     _id: z.string().optional(),//+
     barcode: z.string(),//+
@@ -30,8 +12,10 @@ export const baseProductSchema = z.object({//+
     image: z.string(),//+
     category: z.enum(categories),//+
     subcategory: z.string(),
-    tags: z.array(z.string())
+    tags: z.array(z.string()),
+    show: z.boolean().optional()
 });
+
 
 export const productSchema = baseProductSchema.extend({
     searchString: z.string().optional(),
@@ -41,4 +25,11 @@ export const productSchema = baseProductSchema.extend({
     stock: z.number().optional()
 })
 
+export const productFromAdminSchema = productSchema.pick({ barcode: true, name: true, brand: true, price: true, costPrice: true })
+
+export type StockStatus = 'low' | 'available' | 'out';
+export type Category = typeof categories[number];
+export type Brand = z.infer<typeof brandOptions>;
+export type BaseProduct = z.infer<typeof baseProductSchema>
 export type Product = z.infer<typeof productSchema>
+export type ProductFromAdmin = z.infer<typeof productFromAdminSchema>
