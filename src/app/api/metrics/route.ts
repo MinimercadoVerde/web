@@ -12,11 +12,9 @@ export async function PUT(request: NextRequest) {
         const body = await request.json() as Body
         const validRequest = bodySchema.safeParse(body)
         if (!validRequest.success) {
-            return NextResponse.json(validRequest.error.formErrors, { status: 400,  headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization, application/json',
-            } })
+            return NextResponse.json(validRequest.error.formErrors, {
+                status: 400
+            })
         }
         const { saleValue, unit } = body
         const res = await upsertTodaysMetrics(saleValue, unit)
