@@ -1,6 +1,6 @@
 import { getProductsByCategory } from "@/lib/mongo/products";
 import { Category } from "@/model/product";
-import { kebabToLowerCase } from "@/globalFunctions";
+import { kebabToLowerCase } from "@/utils/functions";
 import ProductCard from "../components/ProductCard";
 
 const CategoryPage = async ({

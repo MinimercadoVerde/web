@@ -1,6 +1,6 @@
 "use client";
 import ProductImage from "@/components/ProductImage";
-import { formatPrice } from "@/globalFunctions";
+import { formatPrice } from "@/utils/functions";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
   addItem,

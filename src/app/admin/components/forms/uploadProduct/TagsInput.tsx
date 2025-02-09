@@ -1,4 +1,4 @@
-import { subcategories, tags } from "@/globalConsts";
+import { subcategories, tags } from "@/utils/consts";
 import { Category } from "@/model/product";
 import { KeyboardEventHandler } from "react";
 import { MdCancel } from "react-icons/md";

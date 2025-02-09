@@ -1,6 +1,6 @@
 import { Product } from "@/model/product";
 import AddToCart from "./AddToCart";
-import { formatPrice } from "@/globalFunctions";
+import { formatPrice } from "@/utils/functions";
 import ProductImage from "@/components/ProductImage";
 
 const ProductCard = ({ product }: { product: Product }) => {

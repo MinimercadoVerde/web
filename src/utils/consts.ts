@@ -1,4 +1,4 @@
-import { Category, Product } from "./model/product";
+import { Category, Product } from "@/model/product";
 
 const tags = [
   "lonchera",

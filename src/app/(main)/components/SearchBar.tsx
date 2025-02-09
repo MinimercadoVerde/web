@@ -4,7 +4,7 @@ import { Product } from "@/model/product"
 import { useEffect, useRef, useState } from "react"
 import ProductImage from "@/components/ProductImage"
 import { useDebounceValue } from "usehooks-ts"
-import { formatPrice } from "@/globalFunctions"
+import { formatPrice } from "@/utils/functions"
 import { IoIosClose, IoIosSearch } from "react-icons/io"
 import ProductDialogCard from "./ProductDialogCard"
 

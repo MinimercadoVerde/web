@@ -4,8 +4,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import CategorySelector from "./CategorySelector";
 import SubcategorySelector from "./SubcategorySelector";
 import { Category } from "@/model/product";
-import { kebabToLowerCase } from "@/globalFunctions";
-import { categories } from "@/globalConsts";
+import { kebabToLowerCase } from "@/utils/functions";
+import { categories } from "@/utils/consts";
 const slugify = (text: string) => text.replace(/\s+/g, "-").toLowerCase();
 
 export async function generateStaticParams() {

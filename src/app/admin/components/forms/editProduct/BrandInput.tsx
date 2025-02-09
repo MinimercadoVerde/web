@@ -1,4 +1,4 @@
-import { brands } from "@/globalConsts";
+import { brands } from "@/utils/consts";
 import Input from "./Input";
 
 const BrandInput = () => {

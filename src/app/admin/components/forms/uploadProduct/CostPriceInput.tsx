@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useFormContext } from "react-hook-form";
 import { UploadProduct } from "../productResolver";
-import { formatPrice } from "@/globalFunctions";
+import { formatPrice } from "@/utils/functions";
 
 const CostPriceInput = () => {
   const {

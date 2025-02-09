@@ -1,4 +1,4 @@
-import { units } from "@/globalConsts"
+import { units } from "@/utils/consts"
 import { z } from "zod"
 
 const salesByUnit = z.record(z.enum(units), z.number())

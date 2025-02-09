@@ -2,8 +2,8 @@ import { getProductsBySubcategory } from "@/lib/mongo/products";
 import { Category } from "@/model/product";
 import React from "react";
 import ProductCard from "../../components/ProductCard";
-import { kebabToLowerCase } from "@/globalFunctions";
-import { categories, subcategories } from "@/globalConsts";
+import { kebabToLowerCase } from "@/utils/functions";
+import { categories, subcategories } from "@/utils/consts";
 
 const slugify = (text: string) => text.replace(/\s+/g, "-").toLowerCase();
 

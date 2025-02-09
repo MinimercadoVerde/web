@@ -2,11 +2,12 @@
 import { Collection, Db, MongoClient, OptionalId, SortDirection } from "mongodb";
 import clientPromise from "."
 import { BaseProduct, Category, Product, ProductFromAdmin, StockStatus } from "@/model/product";
-import { formatName, trimObject } from "@/globalFunctions";
+import { formatName, trimObject } from "@/utils/functions";
 import { revalidatePath } from "next/cache";
 import { UploadProduct } from "@/app/admin/components/forms/productResolver";
 import axios from "axios";
-import { productFiller } from "@/globalConsts";
+import { productFiller } from "@/utils/consts";
+import { uploadNewProduct } from "../tenant/http";
 
 let client: MongoClient;
 let db: Db;
@@ -17,7 +18,7 @@ export async function init() {
     if (db) return
     try {
         client = await clientPromise
-        db = client.db(process.env.CLIENT_ID)
+        db = client.db(process.env.TENANT_ID)
         products = db.collection('products')
     } catch (error) {
         throw new Error('Failed to stablish connection to database')
@@ -80,7 +81,7 @@ export async function findByBarcode(barcode: string) {
     }
 }
 
- export async function uploadProduct(product: UploadProduct) {
+export async function uploadProduct(product: UploadProduct) {
     const { barcode, name, price, brand, category, measure, costPrice, tags, subcategory } = product
     const searchString = `${name} ${brand} ${measure}`.trim().toLowerCase()
     const productPayload: OptionalId<Product> = {
@@ -124,11 +125,13 @@ export async function findByBarcode(barcode: string) {
 }
 
 export async function uploadNewFromAdmin(product: ProductFromAdmin) {
+    await uploadNewProduct(product)
 
     try {
         await init()
+
         const result = await products.insertOne(trimObject({ ...productFiller, ...product }))
-        
+
         return result
     } catch (error: any) {
         throw new Error(error)

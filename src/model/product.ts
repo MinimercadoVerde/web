@@ -1,4 +1,4 @@
-import { brands, categories } from "@/globalConsts";
+import { brands, categories } from "@/utils/consts";
 import { z } from "zod";
 
 const brandOptions = z.enum(brands)
@@ -21,11 +21,12 @@ export const productSchema = baseProductSchema.extend({
     searchString: z.string().optional(),
     costPrice: z.number(),
     price: z.number().step(50),
+    measure: z.string(),
     stockStatus: z.enum(['low', 'available', 'out']),
     stock: z.number().optional()
 })
 
-export const productFromAdminSchema = productSchema.pick({ barcode: true, name: true, brand: true, price: true, costPrice: true })
+export const productFromAdminSchema = productSchema.pick({ barcode: true, name: true, measure: true, brand: true, price: true, costPrice: true })
 
 export type StockStatus = 'low' | 'available' | 'out';
 export type Category = typeof categories[number];

@@ -32,7 +32,7 @@ const productSchema: yup.ObjectSchema<UploadProduct> = yup.object({
     ,
     subcategory: yup.string().required("Por favor ingresa la subcategoria"),
     category: yup.mixed<Category>().oneOf([
-        "canasta familiar", "higiene personal", "mecato", "licor", "aseo", "bebidas", "mascotas", "otra"
+        "alimentos básicos", "cuidado e higiene", "mecato", "licor", "aseo", "bebidas", "mascotas", "otra"
     ]).required(),
     tags: yup.array().required()
 })

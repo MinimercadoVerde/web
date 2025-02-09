@@ -1,4 +1,4 @@
-import { camelCaseToTitleCase, toKebabCase } from "@/globalFunctions"
+import { camelCaseToTitleCase, toKebabCase } from "@/utils/functions"
 import { Category } from "@/model/product"
 import Link from "next/link"
 

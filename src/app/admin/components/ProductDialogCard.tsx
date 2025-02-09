@@ -1,6 +1,6 @@
 "use client";
 import ProductImage from "@/components/ProductImage";
-import { formatPrice } from "@/globalFunctions";
+import { formatPrice } from "@/utils/functions";
 
 import { Product } from "@/model/product";
 import React, { MouseEventHandler, useRef} from "react";

@@ -2,7 +2,7 @@ import { Metrics } from "@/model/metrics";
 import { Collection, Db, MongoClient } from "mongodb";
 import clientPromise from ".";
 import { Unit } from "@/model/order";
-import { getLocalDateTime } from "@/globalFunctions";
+import { getLocalDateTime } from "@/utils/functions";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -14,7 +14,7 @@ export async function init() {
     if (db) return
     try {
         client = await clientPromise
-        db = client.db(process.env.CLIENT_ID)
+        db = client.db(process.env.TENANT_ID)
         metrics = db.collection('metrics')
     } catch (error) {
         throw new Error('Failed to stablish connection to database')

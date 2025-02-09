@@ -1,10 +1,10 @@
 "use client";
-import { camelCaseToTitleCase } from "@/globalFunctions";
+import { camelCaseToTitleCase } from "@/utils/functions";
 import { Category } from "@/model/product";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { UploadProduct } from "../productResolver";
-import { categories, subcategories } from "@/globalConsts";
+import { categories, subcategories } from "@/utils/consts";
 import TagsInput from "./TagsInput";
 
 const CategorySelector = () => {

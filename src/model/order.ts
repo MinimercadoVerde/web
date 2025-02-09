@@ -1,4 +1,4 @@
-import { units } from "@/globalConsts";
+import { units } from "@/utils/consts";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 

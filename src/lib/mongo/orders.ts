@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { StockStatus } from "@/model/product";
 import { revalidatePath } from "next/cache";
 import { upsertTodaysMetrics } from "./metrics";
-import { getLocalDateTime } from "@/globalFunctions";
+import { getLocalDateTime } from "@/utils/functions";
 
 let client: MongoClient;
 let db: Db;
@@ -17,7 +17,7 @@ export async function init() {
     if (db) return
     try {
         client = await clientPromise
-        db = client.db(process.env.CLIENT_ID)
+        db = client.db(process.env.TENANT_ID)
         orders = db.collection('orders')
         deliveredOrders = db.collection('delivered_orders')
     } catch (error) {

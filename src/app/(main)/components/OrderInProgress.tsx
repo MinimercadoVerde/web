@@ -1,5 +1,5 @@
 "use client";
-import { camelCaseToTitleCase, formatPrice } from "@/globalFunctions";
+import { camelCaseToTitleCase, formatPrice } from "@/utils/functions";
 import { setAllowedToShopOvertime } from "@/lib/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getInitialOrders } from "@/lib/redux/reducers/clientOrders";

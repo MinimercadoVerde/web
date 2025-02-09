@@ -10,9 +10,5 @@ export async function GET(request: NextRequest) {
     const res = await getOrdersByStatus(query)
 
     const pendingOrders = JSON.parse(res) as Order[]
-    return NextResponse.json(pendingOrders,
-        {
-            status: 200
-        }
-    )
+    return NextResponse.json(pendingOrders, { status: 200 })
 }

@@ -1,4 +1,4 @@
-import { formatPrice } from "@/globalFunctions";
+import { formatPrice } from "@/utils/functions";
 import { getProductsByStockStatus } from "@/lib/mongo/products";
 import { Product } from "@/model/product";
 import Link from "next/link";

@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 import { getSamplesByCategory } from "@/lib/mongo/products";
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
-import { toKebabCase } from "@/globalFunctions";
+import { toKebabCase } from "@/utils/functions";
 
 const ProductsSlider = async ({
   title,

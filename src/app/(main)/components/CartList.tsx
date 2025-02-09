@@ -1,6 +1,6 @@
 "use client";
 import ProductQuantityHandler from "./ProductQuantityHandler";
-import { formatPrice } from "@/globalFunctions";
+import { formatPrice } from "@/utils/functions";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { CartProduct } from "@/lib/redux/reducers/cart";
 import { CldImage } from "next-cloudinary";

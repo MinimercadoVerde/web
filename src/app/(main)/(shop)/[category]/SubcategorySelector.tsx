@@ -1,18 +1,18 @@
 "use client";
-import { subcategories } from "@/globalConsts";
+import { subcategories } from "@/utils/consts";
 import {
   camelCaseToTitleCase,
   kebabToLowerCase,
   toKebabCase,
   toTitleCase,
-} from "@/globalFunctions";
+} from "@/utils/functions";
 import { Category } from "@/model/product";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
 
 const SubcategorySelector = ({
-  category = "canasta familiar",
+  category = "alimentos básicos",
 }: {
   category: Category;
 }) => {

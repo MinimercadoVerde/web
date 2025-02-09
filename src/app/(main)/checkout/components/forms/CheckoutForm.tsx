@@ -15,7 +15,7 @@ import useCart from "@/app/(main)/components/useCart";
 import {
   camelCaseToTitleCase,
   formatPrice,
-} from "@/globalFunctions";
+} from "@/utils/functions";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { Order, OrderProduct } from "@/model/order";
 import { CartProduct, resetCart } from "@/lib/redux/reducers/cart";
@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import ConfirmedOrder from "../ConfirmedOrder";
 import { setSessionId, uploadOrder } from "@/lib/mongo/orders";
 import { addOrder } from "@/lib/redux/reducers/clientOrders";
-import { deliveryFees } from "@/globalConsts";
+import { deliveryFees } from "@/utils/consts";
 
 const CheckoutForm = () => {
   const dispatch = useAppDispatch();

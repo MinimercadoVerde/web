@@ -1,8 +1,8 @@
 'use client'
-import { camelCaseToTitleCase } from '@/globalFunctions';
+import { camelCaseToTitleCase } from '@/utils/functions';
 import { useFormContext } from 'react-hook-form';
 import { UploadProduct } from '../productResolver';
-import { categories, subcategories } from '@/globalConsts';
+import { categories, subcategories } from '@/utils/consts';
 
 const CategorySelector = () => {
     const { register, getValues } = useFormContext<UploadProduct>()

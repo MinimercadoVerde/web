@@ -1,7 +1,7 @@
 import { Order } from '@/model/order'
 import React from 'react'
 import ProductImage from '@/components/ProductImage'
-import { formatPrice } from '@/globalFunctions'
+import { formatPrice } from '@/utils/functions'
 import { WhatsappIcon } from '@/assets/icons/whatsappLogo'
 import Link from 'next/link'
 

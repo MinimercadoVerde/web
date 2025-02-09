@@ -1,5 +1,5 @@
-import { categories } from "@/globalConsts";
-import { camelCaseToTitleCase, toKebabCase } from "@/globalFunctions";
+import { categories } from "@/utils/consts";
+import { camelCaseToTitleCase, toKebabCase } from "@/utils/functions";
 import { Category } from "@/model/product";
 import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
