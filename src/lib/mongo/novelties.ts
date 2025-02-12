@@ -45,9 +45,9 @@ export async function deleteNovelty( type: ReportType, barcode: string) {
     await init()
     switch (type) {
         case 'new_product':
-            return (await novelties.updateOne({}, {"$pull": {newProducts: { barcode}}})).modifiedCount > 0
+            return (await novelties.updateOne({}, {"$pull": {newProducts: {barcode}}})).modifiedCount > 0
         case 'validate':
-            return (await novelties.updateOne({}, {"$pull": {pendingValidation: {barcode }}})).modifiedCount > 0
+            return (await novelties.updateOne({}, {"$pull": {pendingValidation: { barcode }}})).modifiedCount > 0
         default:
             throw new Error('Invalid report type')
     }

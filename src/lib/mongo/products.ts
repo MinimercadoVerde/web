@@ -60,7 +60,7 @@ export async function querySearch(query: string) {
                     }
                 }
             }
-        ]).project({ _id: 0 }).toArray();
+        ]).project({ _id: 0 }).limit(15).toArray();
 
         return result
     } catch (error: any) {
@@ -125,12 +125,19 @@ export async function uploadProduct(product: UploadProduct) {
 }
 
 export async function uploadNewFromAdmin(product: ProductFromAdmin) {
-    await uploadNewProduct(product)
+    const { barcode, name, brand, measure } = product
+    const globalBody = {
+        barcode,
+        name,
+        brand,
+        measure
+    }
 
     try {
+        await uploadNewProduct(globalBody)
         await init()
 
-        const result = await products.insertOne(trimObject({ ...productFiller, ...product }))
+        const result = await products.updateOne({barcode},{$setOnInsert: trimObject({ ...productFiller, ...product })},{upsert: true})
 
         return result
     } catch (error: any) {
