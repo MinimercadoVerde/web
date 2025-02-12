@@ -8,6 +8,7 @@ import { UploadProduct } from "@/app/admin/components/forms/productResolver";
 import axios from "axios";
 import { productFiller } from "@/utils/consts";
 import { uploadNewProduct } from "../tenant/http";
+import { deleteNovelty } from "./novelties";
 
 let client: MongoClient;
 let db: Db;
@@ -134,10 +135,10 @@ export async function uploadNewFromAdmin(product: ProductFromAdmin) {
     }
 
     try {
-        await uploadNewProduct(globalBody)
         await init()
-
+        await uploadNewProduct(globalBody)
         const result = await products.updateOne({barcode},{$setOnInsert: trimObject({ ...productFiller, ...product })},{upsert: true})
+        await deleteNovelty("new_product", barcode)
 
         return result
     } catch (error: any) {
